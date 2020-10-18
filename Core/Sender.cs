@@ -41,6 +41,7 @@ namespace Core
 			}
 			else
 			{
+				// should be impossible
 				var e = new Exception("No message to send!");
 				_server.RaiseError(_session, e);
 				// TODO reset lock?
@@ -80,10 +81,17 @@ namespace Core
 				}
 				else
 				{
-					// not sure if this is even possible
-					var remaining = args.MemoryBuffer.Length - args.BytesTransferred;
-					args.SetBuffer(args.MemoryBuffer.Slice(args.BytesTransferred, remaining));
-					BeginSend(args);
+					// in blocking mode, which is the default, we should not get a
+					// success callback until all bytes have been transferred.
+					// unsure if we'll ever get zero indicating a closed connection.
+					// TODO if this condition is never reached, BeginSend can be merged into SendNext
+					var msg = string.Format("unexpected send callback with {0} of {1} bytes transferred", args.MemoryBuffer.Length, args.BytesTransferred);
+					var e = new Exception(msg);
+					_server.RaiseError(_session, e);
+					args.Dispose();
+					//var remaining = args.MemoryBuffer.Length - args.BytesTransferred;
+					//args.SetBuffer(args.MemoryBuffer.Slice(args.BytesTransferred, remaining));
+					//BeginSend(args);
 				}
 			}
 			else
