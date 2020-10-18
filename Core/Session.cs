@@ -11,86 +11,38 @@ namespace Core
 	{
 		private static long _nextId = 0;
 		public long Id { get; } = Interlocked.Increment(ref _nextId);
-		private Server Server { get; }
-		private Socket Socket { get; }
-		public EndPoint RemoteEndPoint { get { return Socket.RemoteEndPoint; } }
+		public EndPoint RemoteEndPoint { get { return _socket.RemoteEndPoint; } }
 		/// <summary>
 		/// Not initialized until the first message is received.
 		/// </summary>
-		public ClientVersion Version { get; private set; }
-		private MessageBuffer Buffer { get; } = new MessageBuffer(2048);
+		public ClientVersion Version { get; internal set; }
 		public object UserData { get; set; }
+
+		private readonly Socket _socket;
+		private readonly Sender _sender;
+		private readonly Receiver _receiver;
 
 		internal Session(Server server, Socket socket)
 		{
-			Server = server;
-			Socket = socket;
+			_socket = socket;
+			_sender = new Sender(server, this, socket);
+			_receiver = new Receiver(server, this, socket);
 		}
 
-		// TODO make Start public so observer can decide if errors are fatal?
 		internal void Start()
 		{
-			var args = new SocketAsyncEventArgs();
-			args.SetBuffer(new byte[2048]);
-			args.Completed += ReceiveComplete;
-			BeginReceive(Socket, args);
+			_receiver.Start();
 		}
 
-		private void BeginReceive(Socket socket, SocketAsyncEventArgs args)
+		public void Send(byte type, ReadOnlyMemory<byte> payload)
 		{
-			try
-			{
-				if(!socket.ReceiveAsync(args))
-				{
-					ReceiveComplete(socket, args);
-				}
-			}
-			catch(Exception e)
-			{
-				Server.RaiseError(this, e);
-				args.Dispose();
-			}
-		}
-
-		private void ReceiveComplete(object socket, SocketAsyncEventArgs args)
-		{
-			if(args.SocketError == SocketError.Success)
-			{
-				if(args.BytesTransferred == 0)
-				{
-					Server.RaiseConnect(this, false);
-					args.Dispose();
-				}
-				else
-				{
-					ReadMessages(args.MemoryBuffer.Slice(0, args.BytesTransferred));
-					BeginReceive((Socket)socket, args);
-				}
-			}
-			else
-			{
-				var e = new Exception(args.SocketError.ToString());
-				Server.RaiseError(this, e);
-				args.Dispose();
-			}
-		}
-
-		private void ReadMessages(Memory<byte> bytes)
-		{
-			Buffer.Append(bytes);
-			while(Buffer.TryGetMessage(out Message message))
-			{
-				if(Version.MajorVersion == 0)
-				{
-					Version = MemoryMarshal.Read<ClientVersion>(message.Payload.Span);
-				}
-				Server.RaiseMessageReceived(this, message);
-			}
+			var message = new TcpMessage(type, payload);
+			_sender.Send(message);
 		}
 
 		public void Dispose()
 		{
-			Socket.Dispose();
+			_socket.Dispose();
 		}
 	}
 }

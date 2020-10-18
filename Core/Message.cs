@@ -4,31 +4,28 @@ using System.IO;
 
 namespace Core
 {
-	public struct Message
+	internal class Message : IMessage
 	{
-		public byte Type { get; }
-		public ushort Sequence { get; }
-		public ReadOnlyMemory<byte> Payload { get; }
-
+		public ReadOnlyMemory<byte> Data { get; }
+		public byte Type => Data.Span[9];
+		public ushort Sequence => BinaryPrimitives.ReadUInt16BigEndian(Data.Slice(2, 2).Span);
+		public ReadOnlyMemory<byte> Payload => Data[10..^2];
 		internal Message(ReadOnlyMemory<byte> data)
 		{
-			if (ComputeChecksum(data) != BinaryPrimitives.ReadUInt16BigEndian(data[^2..].Span))
+			Data = data;
+			if (ComputeChecksum(Data[..^2].Span) != BinaryPrimitives.ReadUInt16BigEndian(Data[^2..].Span))
 			{
 				throw new InvalidDataException();
 			}
-			Type = data.Span[9];
-			Sequence = BinaryPrimitives.ReadUInt16BigEndian(data.Slice(2, 2).Span);
-			Payload = data[10..^2].ToArray();
 		}
 
-		private static ushort ComputeChecksum(ReadOnlyMemory<byte> data)
+		private static ushort ComputeChecksum(ReadOnlySpan<byte> span)
 		{
-			var s = data.Span;
 			byte b0 = 0x7E;
 			byte b1 = 0x7E;
-			for (int i = 0; i < s.Length - 2; ++i)
+			for (int i = 0; i < span.Length; ++i)
 			{
-				b0 += s[i];
+				b0 += span[i];
 				b1 += b0;
 			}
 			return (ushort)(b1 - ((b0 + b1) << 8));
