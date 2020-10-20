@@ -86,13 +86,13 @@ namespace Core
 			OnConnect?.Invoke(this, evt);
 		}
 
-		internal void RaiseMessageSent(Session session, Message message)
+		internal void RaiseMessageSent(Session session, IMessage message)
 		{
 			var evt = new MessageEventArgs(session, message);
 			OnMessageSent?.Invoke(this, evt);
 		}
 
-		internal void RaiseMessageReceived(Session session, Message message)
+		internal void RaiseMessageReceived(Session session, IMessage message)
 		{
 			var evt = new MessageEventArgs(session, message);
 			OnMessageReceived?.Invoke(this, evt);

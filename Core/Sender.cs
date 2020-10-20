@@ -34,7 +34,7 @@ namespace Core
 
 		private void SendNext(SocketAsyncEventArgs args)
 		{
-			if (_queue.TryDequeue(out IMessage message))
+			if (_queue.TryPeek(out IMessage message))
 			{
 				args.SetBuffer(message.Data.ToArray());
 				BeginSend(args);
@@ -70,6 +70,8 @@ namespace Core
 			{
 				if (args.BytesTransferred == args.MemoryBuffer.Length)
 				{
+					_queue.TryDequeue(out IMessage message);
+					_server.RaiseMessageSent(_session, message);
 					if (Interlocked.Decrement(ref _sending) > 0)
 					{
 						SendNext(args);

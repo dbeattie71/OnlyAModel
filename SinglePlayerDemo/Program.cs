@@ -8,9 +8,9 @@ namespace SinglePlayerDemo
 		static void Main()
 		{
 			var builder = new ServerBuilder();
+			builder.Add(new ConsoleLogger());
 			var handlers = new ClientHandlers();
 			builder.OnMessageReceived += handlers.OnMessageReceived;
-			builder.Add(new ConsoleLogger());
 			var server = builder.Build();
 			using(var start = server.Start())
 			{
