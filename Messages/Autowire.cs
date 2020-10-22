@@ -9,12 +9,12 @@ namespace Messages
 {
 	public static class Autowire
 	{
-		public static EventHandler<MessageEventArgs> CreateHandler(int version, params object[] observers)
+		public static EventHandler<MessageEventArgs> CreateMessageHandler(int version, params object[] observers)
 		{
-			return CreateHandler(version, new List<Assembly>() { Assembly.GetAssembly(typeof(Autowire)) }, observers);
+			return CreateMessageHandler(version, new List<Assembly>() { Assembly.GetAssembly(typeof(Autowire)) }, observers);
 		}
 
-		public static EventHandler<MessageEventArgs> CreateHandler(int version, IEnumerable<Assembly> assemblies, params object[] observers)
+		public static EventHandler<MessageEventArgs> CreateMessageHandler(int version, IEnumerable<Assembly> assemblies, params object[] observers)
 		{
 			var factories = FindFactories(version, assemblies);
 			var payloads = factories.Values.Select(o => o.ReturnType).Distinct();

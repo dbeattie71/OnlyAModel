@@ -13,12 +13,17 @@ namespace Core
 
 		public ReadOnlyMemory<byte> Payload => Data[3..];
 
-		internal TcpMessage(byte type, ReadOnlyMemory<byte> payload)
+		internal TcpMessage(IPayload payload)
 		{
+			// [0..2] length
+			// [2]    type
+			// [3..]  payload
+
 			Memory<byte> data = new byte[payload.Length + 3];
-			BinaryPrimitives.WriteUInt16BigEndian(data[0..2].Span, (ushort)payload.Length);
-			data.Span[2] = type;
-			payload.CopyTo(data[3..]);
+			var span = data.Span;
+			BinaryPrimitives.WriteUInt16BigEndian(span[0..2], payload.Length);
+			span[2] = (byte)payload.Type;
+			payload.Marshal(span[3..]);
 			Data = data;
 		}
 	}

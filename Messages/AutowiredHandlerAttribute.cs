@@ -8,8 +8,5 @@ namespace Messages
 	/// autowired factory method in the same handler.
 	/// </summary>
 	[AttributeUsage(AttributeTargets.Method)]
-	public class AutowiredHandlerAttribute : Attribute
-	{
-
-	}
+	public class AutowiredHandlerAttribute : Attribute { }
 }

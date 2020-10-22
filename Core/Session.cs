@@ -34,9 +34,9 @@ namespace Core
 			_receiver.Start();
 		}
 
-		public void Send(byte type, ReadOnlyMemory<byte> payload)
+		public void Send(IPayload payload)
 		{
-			var message = new TcpMessage(type, payload);
+			var message = new TcpMessage(payload);
 			_sender.Send(message);
 		}
 

@@ -2,15 +2,16 @@
 using Core.Event;
 using Messages;
 using Messages.ClientToServer;
+using Messages.ServerToClient;
 
 namespace SinglePlayerDemo
 {
 	public class SessionHandler
 	{
 		[AutowiredHandler]
-		public void OnCryptKeyRequest(Server server, MessageEventArgs args, CryptKeyRequest payload)
+		public void OnCryptKeyRequest(Server server, MessageEventArgs args, Handshake payload)
 		{
-			args.Session.Send((byte)MessageType.ServerToClient.CryptKey, new byte[6]);
+			args.Session.Send(new HandshakeResponse(args.Session.Version.ToString(), args.Session.Version.Build));
 		}
 	}
 }

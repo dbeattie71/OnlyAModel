@@ -54,6 +54,7 @@ namespace Core
 				}
 				else
 				{
+					// FIXME catch exception from invalid checksum
 					BufferMessages(args.MemoryBuffer.Slice(0, args.BytesTransferred));
 					BeginReceive((Socket)socket, args);
 				}

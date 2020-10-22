@@ -1,4 +1,4 @@
-﻿namespace Messages
+﻿namespace Core
 {
 	public static class MessageType
 	{
@@ -77,7 +77,7 @@
 			PlayerGroundTarget = 0xEC,          // 0x44 ^ 168
 			CraftRequest = 0xED,                // 0x45 ^ 168
 			UDPPingRequest = 0xF2,              // 0x5A ^ 168
-			CryptKeyRequest = 0xF4,             // 0x5C ^ 168
+			Handshake = 0xF4,                   // 0x5C ^ 168 formerly CryptKeyRequest
 			SiegeCommandRequest = 0xF5,         // 0x5D ^ 168
 			PlayerCancelsEffect = 0xF8,         // 0x50 ^ 168 (168 = 0xA8)
 			CharacterOverviewRequest = 0xFC,    // 0x54 ^ 168
@@ -104,7 +104,7 @@
 			MarketExplorerWindow = 0x1F,
 			PositionAndObjectID = 0x20,
 			DebugMode = 0x21,
-			CryptKey = 0x22,
+			HandshakeResponse = 0x22,           // formerly CryptKey
 			SessionID = 0x28,
 			PingReply = 0x29,
 			LoginGranted = 0x2A,
