@@ -16,8 +16,7 @@ namespace SinglePlayerDemo
 			else
 			{
 				Console.WriteLine("Session {0} disconnected", args.Session.Id);
-			}
-			
+			}			
 		}
 
 		public void OnMessageSent(object server, MessageEventArgs args)

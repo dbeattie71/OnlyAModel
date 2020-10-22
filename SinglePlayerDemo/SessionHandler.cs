@@ -5,7 +5,7 @@ using Messages.ClientToServer;
 
 namespace SinglePlayerDemo
 {
-	public class AutowiredHandlers
+	public class SessionHandler
 	{
 		[AutowiredHandler]
 		public void OnCryptKeyRequest(Server server, MessageEventArgs args, CryptKeyRequest payload)

@@ -1,4 +1,5 @@
-﻿using System.Runtime.InteropServices;
+﻿using System;
+using System.Runtime.InteropServices;
 
 namespace Core.Data
 {
@@ -16,8 +17,9 @@ namespace Core.Data
 		private readonly byte _revision;
 		public ushort Build { get; } // build number seems more plausible if it's little endian
 #pragma warning restore 0649
-		public int MinorVersion { get { return _minorVersion0 * 100 + _minorVersion1; } }
-		public char Revision { get { return (char)_revision; } }
+		public int MinorVersion { get => _minorVersion0 * 100 + _minorVersion1; }
+		public char Revision { get => (char)_revision; }
+		public int ProtocolVersion { get => MajorVersion * 100 * (int)Math.Pow(10, _minorVersion0) + MinorVersion; }
 		public override string ToString() => MajorVersion + "." + MinorVersion + Revision;
 	}
 }
