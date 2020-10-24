@@ -1,7 +1,5 @@
-﻿using Core;
-using System;
+﻿using System;
 using System.Buffers.Binary;
-using System.Collections.Generic;
 using System.Text;
 
 namespace Messages
@@ -25,7 +23,7 @@ namespace Messages
 		public void WriteDaocString(string value)
 		{
 			// length includes the null terminator
-			WriteUInt32LittleEndian(value.Length + 1);
+			WriteUInt32LittleEndian((uint)value.Length + 1);
 			WriteString(value);
 			WriteByte(0);
 		}
@@ -37,14 +35,24 @@ namespace Messages
 			_position += sizeof(ushort);
 		}
 
-		/// <summary>
-		/// Writes a <c>uint</c> but takes an <c>int</c> for convenience.
-		/// </summary>
-		/// <param name="value"></param>
-		private void WriteUInt32LittleEndian(int value)
+		public void WriteUInt16BigEndian(ushort value)
+		{
+			var slice = _span.Slice(_position, sizeof(ushort));
+			BinaryPrimitives.WriteUInt16BigEndian(slice, value);
+			_position += sizeof(ushort);
+		}
+
+		private void WriteUInt32LittleEndian(uint value)
 		{
 			var slice = _span.Slice(_position, sizeof(uint));
-			BinaryPrimitives.WriteUInt32LittleEndian(slice, (uint)value);
+			BinaryPrimitives.WriteUInt32LittleEndian(slice, value);
+			_position += sizeof(uint);
+		}
+
+		public void WriteUInt32BigEndian(uint value)
+		{
+			var slice = _span.Slice(_position, sizeof(uint));
+			BinaryPrimitives.WriteUInt32BigEndian(slice, value);
 			_position += sizeof(uint);
 		}
 
@@ -55,7 +63,7 @@ namespace Messages
 			_position += value.Length;
 		}
 
-		private void WriteByte(byte value)
+		public void WriteByte(byte value)
 		{
 			_span[_position] = value;
 			++_position;

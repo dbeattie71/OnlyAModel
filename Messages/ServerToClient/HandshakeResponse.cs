@@ -16,7 +16,7 @@ namespace Messages.ServerToClient
 
 		public MessageType.ServerToClient Type => MessageType.ServerToClient.HandshakeResponse;
 
-		public ushort Length => (ushort)(_version.Length + 7);
+		public int Length => _version.Length + 7;
 
 		public void Marshal(Span<byte> span)
 		{

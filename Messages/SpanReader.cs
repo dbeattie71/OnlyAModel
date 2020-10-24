@@ -22,30 +22,42 @@ namespace Messages
 		}
 
 		/// <summary>
-		/// Reads DAoC's weird hybrid of UCSD and C strings. These consist
-		/// of a <c>uint</c> length followed by a C string. The length
-		/// includes the null terminator, so the actual string is one byte
-		/// shorter than specified.
+		/// A DAoC string consists of a 32-bit length, ASCII string data, and
+		/// a null terminator.
 		/// </summary>
 		public string ReadDaocString()
 		{
 			var len = ReadUInt32LittleEndian();
-			return ReadCString(len);
+			return ReadCString((int)len);
 		}
 
 		/// <summary>
-		/// Reads a <c>uint</c> but returns an <c>int</c> for convenience.
+		/// Reads a string from a fixed-length field padded with nulls.
 		/// </summary>
-		private int ReadUInt32LittleEndian()
+		public string ReadFixedString(int length)
 		{
-			var value = BinaryPrimitives.ReadUInt32LittleEndian(_span.Slice(_position, sizeof(uint)));
-			_position += sizeof(uint);
-			return (int)value;
+			var slice = _span.Slice(_position, length);
+			var value = Encoding.ASCII.GetString(slice.ToArray()).TrimEnd('\0');
+			_position += length;
+			return value;
 		}
 
-		/// <summary>
-		/// Length includes the null terminator, which is not returned.
-		/// </summary>
+		public uint ReadUInt32LittleEndian()
+		{
+			var slice = _span.Slice(_position, sizeof(uint));
+			var value = BinaryPrimitives.ReadUInt32LittleEndian(slice);
+			_position += sizeof(uint);
+			return value;
+		}
+
+		public uint ReadUInt32BigEndian()
+		{
+			var slice = _span.Slice(_position, sizeof(uint));
+			var value = BinaryPrimitives.ReadUInt32BigEndian(slice);
+			_position += sizeof(uint);
+			return value;
+		}
+
 		private string ReadCString(int length)
 		{
 			var value = Encoding.ASCII.GetString(_span.Slice(_position, length - 1));

@@ -21,7 +21,7 @@ namespace Core
 
 			Memory<byte> data = new byte[payload.Length + 3];
 			var span = data.Span;
-			BinaryPrimitives.WriteUInt16BigEndian(span[0..2], payload.Length);
+			BinaryPrimitives.WriteUInt16BigEndian(span[0..2], (ushort)payload.Length);
 			span[2] = (byte)payload.Type;
 			payload.Marshal(span[3..]);
 			Data = data;

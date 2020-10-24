@@ -105,7 +105,7 @@
 			PositionAndObjectID = 0x20,
 			DebugMode = 0x21,
 			HandshakeResponse = 0x22,           // formerly CryptKey
-			SessionID = 0x28,
+			SessionId = 0x28,
 			PingReply = 0x29,
 			LoginGranted = 0x2A,
 			CharacterInitFinished = 0x2B,
@@ -196,7 +196,7 @@
 			MoneyUpdate = 0xFA,
 			StatsUpdate = 0xFB,
 			CharacterOverview = 0xFD,
-			Realm = 0xFE,
+			PlayerRealm = 0xFE,
 			MasterLevelWindow = 0x13,
 			CheckLOSRequest = 0xD0
 		}
