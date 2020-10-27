@@ -8,7 +8,7 @@ namespace Messages.ClientToServer
 	{
 		public Realm Realm { get; }
 
-		private CharacterOverviewRequest(Realm realm)
+		public CharacterOverviewRequest(Realm realm)
 		{
 			Realm = realm;
 		}

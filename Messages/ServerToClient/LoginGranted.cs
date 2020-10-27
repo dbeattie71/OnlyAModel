@@ -9,15 +9,15 @@ namespace Messages.ServerToClient
 		private readonly string _user;
 		private readonly string _serverName;
 		private readonly byte _serverId;
-		private readonly ServerMode _serverMode;
+		private readonly PvPMode _pvpMode;
 		private readonly bool _trialAccount;
 
-		public LoginGranted(string user, string serverName, ServerMode serverMode)
+		public LoginGranted(string user, string serverName, PvPMode pvpMode)
 		{
 			_user = user;
 			_serverName = serverName;
 			_serverId = 0x01;
-			_serverMode = serverMode;
+			_pvpMode = pvpMode;
 			_trialAccount = false;
 		}
 
@@ -31,7 +31,7 @@ namespace Messages.ServerToClient
 			writer.WriteShortString(_user);
 			writer.WriteShortString(_serverName);
 			writer.WriteByte(_serverId);
-			writer.WriteByte((byte)_serverMode);
+			writer.WriteByte((byte)_pvpMode);
 			writer.WriteByte((byte)(_trialAccount ? 1 : 0));
 		}
 	}

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Buffers.Binary;
+using System.Runtime.InteropServices;
 using System.Text;
 
 namespace Messages
@@ -28,10 +29,29 @@ namespace Messages
 
 		public void WriteDaocString(string value)
 		{
-			// length includes the null terminator
-			WriteUInt32LittleEndian((uint)value.Length + 1);
+			if(value == null)
+			{
+				WriteUInt32LittleEndian(0);
+			}
+			else
+			{
+				// length includes the null terminator
+				WriteUInt32LittleEndian((uint)value.Length + 1);
+				WriteString(value);
+				WriteByte(0);
+			}
+		}
+
+		public void WriteFixedString(string value, int width)
+		{
+			// allows the string to use the entire field with no terminator.
+			// not sure if that's what we want.
+			if (value.Length > width)
+			{
+				throw new ArgumentException();
+			}
 			WriteString(value);
-			WriteByte(0);
+			Skip(width - value.Length);
 		}
 
 		public void WriteUInt16LittleEndian(ushort value)
@@ -48,7 +68,7 @@ namespace Messages
 			_position += sizeof(ushort);
 		}
 
-		private void WriteUInt32LittleEndian(uint value)
+		public void WriteUInt32LittleEndian(uint value)
 		{
 			var slice = _span.Slice(_position, sizeof(uint));
 			BinaryPrimitives.WriteUInt32LittleEndian(slice, value);
@@ -73,6 +93,13 @@ namespace Messages
 		{
 			_span[_position] = value;
 			++_position;
+		}
+
+		public void Write<T>(T value) where T : unmanaged
+		{
+			var len = Marshal.SizeOf(typeof(T));
+			MemoryMarshal.Write(_span.Slice(_position, len), ref value);
+			_position += len;
 		}
 	}
 }

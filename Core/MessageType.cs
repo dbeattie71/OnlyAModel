@@ -63,7 +63,7 @@
 			PlayerSitRequest = 0xC7,            // 0x6F ^ 168
 			PlayerDismountRequest = 0xC8,       // 0x60 ^ 168
 			BonusesListRequest = 0xCA,          // 0x62 ^ 168
-			DuplicateNameCheck = 0xCB,          // 0x63 ^ 168
+			NameCheck = 0xCB,          // 0x63 ^ 168
 			CheckLOSRequest = 0xD0,             // 0x78 ^ 168
 			WorldInitRequest = 0xD4,            // 0x7C ^ 168
 			CreatePlayerRequest = 0xD5,         // 0x7D ^ 168
@@ -169,7 +169,7 @@
 			RemoveFriend = 0xC6,
 			Riding = 0xC8,
 			SoundEffect = 0xC9,
-			DupNameCheckReply = 0xCC,
+			NameCheckResponse = 0xCC,
 			HouseCreate = 0xD1,
 			HouseChangeGarden = 0xD2,
 			PlaySound = 0xD3,

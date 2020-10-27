@@ -5,7 +5,7 @@
 	/// and whether the player can back out of the character select screen
 	/// after selecting a realm.
 	/// </summary>
-	public enum ServerMode : byte
+	public enum PvPMode : byte
 	{
 		/// <summary>
 		/// Standard RvR. Same realm PCs friendly, other realm PCs enemy.

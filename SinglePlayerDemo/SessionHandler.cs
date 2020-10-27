@@ -3,12 +3,18 @@ using Core.Event;
 using Messages;
 using Messages.ClientToServer;
 using Messages.Models;
+using Messages.Models.Character;
 using Messages.ServerToClient;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace SinglePlayerDemo
 {
 	public class SessionHandler
 	{
+		private List<Character> Characters { get; } = new List<Character>(new Character[30]);
+
 		[AutowiredHandler]
 		public void OnCryptKeyRequest(Server server, MessageEventArgs args, Handshake handshake)
 		{
@@ -19,9 +25,8 @@ namespace SinglePlayerDemo
 		[AutowiredHandler]
 		public void OnLoginRequest(Server server, MessageEventArgs args, LoginRequest login)
 		{
-			var response = new LoginGranted(login.User, "Only A Model", ServerMode.PvE);
+			var response = new LoginGranted(login.User, "Only A Model", PvPMode.PvE);
 			args.Session.Send(response);
-
 		}
 
 		[AutowiredHandler]
@@ -55,9 +60,28 @@ namespace SinglePlayerDemo
 			else
 			{
 				// client is requesting character details for a particular realm
-				var response = new CharacterOverview();
+				int offset = ((int)request.Realm - 1) * 10;
+				var response = new CharacterOverview(Characters.Skip(offset).Take(10));
 				args.Session.Send(response);
 			}
+		}
+
+		[AutowiredHandler]
+		public void OnNameCheck(Server server, MessageEventArgs args, NameCheck request)
+		{
+			var status = Characters.Any(o => request.Name.Equals(o?.Name, StringComparison.InvariantCultureIgnoreCase)) ? NameStatus.Unavailable : NameStatus.Available;
+			var response = new NameCheckResponse(request.Name, request.User, status);
+			args.Session.Send(response);
+		}
+
+		[AutowiredHandler]
+		public void OnCharacterCreateRequest(Server server, MessageEventArgs args, CharacterCreateRequest request)
+		{
+			Characters[request.Slot] = request.Character;
+			// the client automatically displays the character it just created, but doesn't know its location.
+			// we can send CharacterOverview here if we want to assign it before first login.
+			//request.Character.LocationDescription = "Constantine's Sound";
+			//OnCharacterOverviewRequest(server, args, new CharacterOverviewRequest(request.Character.Classification.Realm));
 		}
 	}
 }
