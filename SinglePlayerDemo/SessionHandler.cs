@@ -2,7 +2,7 @@
 using Core.Event;
 using Messages;
 using Messages.ClientToServer;
-using Messages.Data;
+using Messages.Models;
 using Messages.ServerToClient;
 
 namespace SinglePlayerDemo
@@ -19,7 +19,7 @@ namespace SinglePlayerDemo
 		[AutowiredHandler]
 		public void OnLoginRequest(Server server, MessageEventArgs args, LoginRequest login)
 		{
-			var response = new LoginGranted(login.User, "Only A Model");
+			var response = new LoginGranted(login.User, "Only A Model", ServerMode.PvE);
 			args.Session.Send(response);
 
 		}

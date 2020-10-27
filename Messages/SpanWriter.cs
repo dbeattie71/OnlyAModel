@@ -20,6 +20,12 @@ namespace Messages
 			_position += bytes;
 		}
 
+		public void WriteShortString(string value)
+		{
+			WriteByte((byte)value.Length);
+			WriteString(value);
+		}
+
 		public void WriteDaocString(string value)
 		{
 			// length includes the null terminator

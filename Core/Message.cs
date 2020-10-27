@@ -6,14 +6,17 @@ namespace Core
 {
 	internal class Message : IMessage
 	{
-		public ReadOnlyMemory<byte> Data { get; }
-		public byte Type => Data.Span[9];
-		public ushort Sequence => BinaryPrimitives.ReadUInt16BigEndian(Data.Slice(2, 2).Span);
-		public ReadOnlyMemory<byte> Payload => Data[10..^2];
+#pragma warning disable IDE0032
+		private readonly ReadOnlyMemory<byte> _data;
+#pragma warning restore IDE0032
+		public ReadOnlyMemory<byte> Data => _data;
+		public byte Type => _data.Span[9];
+		public ushort Sequence => BinaryPrimitives.ReadUInt16BigEndian(_data.Slice(2, 2).Span);
+		public ReadOnlyMemory<byte> Payload => _data[10..^2];
 		internal Message(ReadOnlyMemory<byte> data)
 		{
-			Data = data;
-			if (ComputeChecksum(Data[..^2].Span) != BinaryPrimitives.ReadUInt16BigEndian(Data[^2..].Span))
+			_data = data;
+			if (ComputeChecksum(_data[..^2].Span) != BinaryPrimitives.ReadUInt16BigEndian(_data[^2..].Span))
 			{
 				throw new InvalidDataException();
 			}

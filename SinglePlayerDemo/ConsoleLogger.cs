@@ -1,7 +1,7 @@
 ﻿using Core;
 using Core.Event;
-using Messages;
 using System;
+using System.Linq;
 
 namespace SinglePlayerDemo
 {
@@ -21,14 +21,28 @@ namespace SinglePlayerDemo
 
 		public void OnMessageSent(object server, MessageEventArgs args)
 		{
-			var type = Enum.GetName(typeof(MessageType.ServerToClient), args.Message.Type) ?? "unknown";
-			Console.WriteLine("Session {0} <= {1}", args.Session.Id, type);
+			if(args.Message.Type != (byte)MessageType.ServerToClient.PingReply)
+			{
+				var type = Enum.GetName(typeof(MessageType.ServerToClient), args.Message.Type) ?? "unknown";
+				Console.WriteLine("Session {0} <= {1}", args.Session.Id, type);
+
+				var arr = args.Message.Data.ToArray();
+				Console.WriteLine(BitConverter.ToString(arr).Replace("-", " "));
+				Console.WriteLine(string.Concat(arr.Select(b => b >= 32 && b <= 126 ? (char)b + "  " : ".  ")));
+			}
 		}
 
 		public void OnMessageReceived(object server, MessageEventArgs args)
 		{
-			var type = Enum.GetName(typeof(MessageType.ClientToServer), args.Message.Type) ?? "unknown";
-			Console.WriteLine("Session {0} => {1}", args.Session.Id, type);
+			if(args.Message.Type != (byte)MessageType.ClientToServer.PingRequest)
+			{
+				var type = Enum.GetName(typeof(MessageType.ClientToServer), args.Message.Type) ?? "unknown";
+				Console.WriteLine("Session {0} => {1}", args.Session.Id, type);
+
+				var arr = args.Message.Data.ToArray();
+				Console.WriteLine(BitConverter.ToString(arr).Replace("-", " "));
+				Console.WriteLine(string.Concat(arr.Select(b => b >= 32 && b <= 126 ? (char)b + "  " : ".  ")));
+			}
 		}
 
 		public void OnError(object server, ErrorEventArgs args)

@@ -1,4 +1,4 @@
-﻿namespace Messages.Data
+﻿namespace Messages.Models
 {
 	public enum Realm : byte
 	{

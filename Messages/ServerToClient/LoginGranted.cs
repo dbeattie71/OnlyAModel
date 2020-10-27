@@ -1,4 +1,5 @@
 ﻿using Core;
+using Messages.Models;
 using System;
 
 namespace Messages.ServerToClient
@@ -7,19 +8,16 @@ namespace Messages.ServerToClient
 	{
 		private readonly string _user;
 		private readonly string _serverName;
-		// DoL hardcodes 0x05, notes say seems irrelevant
 		private readonly byte _serverId;
-		// DoL notes say 00 normal type?, 01 mordred type, 03 gaheris type, 07 ywain type
-		// not sure why this is called color - maybe refers to RvR modes?
-		private readonly byte _serverColor;
+		private readonly ServerMode _serverMode;
 		private readonly bool _trialAccount;
 
-		public LoginGranted(string user, string serverName)
+		public LoginGranted(string user, string serverName, ServerMode serverMode)
 		{
 			_user = user;
 			_serverName = serverName;
-			_serverId = 0x00;
-			_serverColor = 0x00;
+			_serverId = 0x01;
+			_serverMode = serverMode;
 			_trialAccount = false;
 		}
 
@@ -30,11 +28,11 @@ namespace Messages.ServerToClient
 		public void Marshal(Span<byte> span)
 		{
 			var writer = new SpanWriter(span);
-			writer.WriteDaocString(_user);
-			writer.WriteDaocString(_serverName);
+			writer.WriteShortString(_user);
+			writer.WriteShortString(_serverName);
 			writer.WriteByte(_serverId);
-			writer.WriteByte(_serverColor);
-			writer.WriteByte(_trialAccount ? (byte)0x01 : (byte)0x00);
+			writer.WriteByte((byte)_serverMode);
+			writer.WriteByte((byte)(_trialAccount ? 1 : 0));
 		}
 	}
 }
