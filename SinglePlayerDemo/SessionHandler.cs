@@ -69,7 +69,16 @@ namespace SinglePlayerDemo
 		[AutowiredHandler]
 		public void OnNameCheck(Server server, MessageEventArgs args, NameCheck request)
 		{
-			var status = Characters.Any(o => request.Name.Equals(o?.Name, StringComparison.InvariantCultureIgnoreCase)) ? NameStatus.Unavailable : NameStatus.Available;
+			var status = NameStatus.Available;
+			// the name "noname" has special meaning in CharacterSelectRequest
+			if(request.Name.EqualsIgnoreCase("noname"))
+			{
+				status = NameStatus.Prohibited;
+			}
+			else if(Characters.Any(o => request.Name.EqualsIgnoreCase(o?.Name)))
+			{
+				status = NameStatus.Unavailable;
+			}
 			var response = new NameCheckResponse(request.Name, request.User, status);
 			args.Session.Send(response);
 		}
