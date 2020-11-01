@@ -150,7 +150,8 @@
 			CharacterPointsUpdate = 0x91,
 			Weather = 0x92,
 			DoorState = 0x99,
-			ClientRegions = 0x9E,
+			RegionList = 0x9E,		// was ClientRegions
+			CharacterRegion = 0xB1,	// was ClientRegion
 			ObjectUpdate = 0xA1,
 			RemoveObject = 0xA2,
 			Quit = 0xA4,

@@ -18,7 +18,7 @@ namespace Messages.ClientToServer
 		public static CharacterSelectRequest Unmarshall(ReadOnlyMemory<byte> payload)
 		{
 			var reader = new SpanReader(payload.Span);
-			reader.Skip(2);
+			reader.Skip(2); // DoL reads this as a byte or ushort called "type", but never uses it
 			var name = reader.ReadFixedString(24);
 			var language = reader.ReadFixedString(6);
 			return new CharacterSelectRequest(name, language);

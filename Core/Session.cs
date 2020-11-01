@@ -2,7 +2,6 @@
 using System;
 using System.Net;
 using System.Net.Sockets;
-using System.Runtime.InteropServices;
 using System.Threading;
 
 namespace Core
@@ -11,7 +10,8 @@ namespace Core
 	{
 		private static long _nextId = 0;
 		public long Id { get; } = Interlocked.Increment(ref _nextId);
-		public EndPoint RemoteEndPoint { get { return _socket.RemoteEndPoint; } }
+		public IPEndPoint RemoteEndPoint { get => (IPEndPoint)_socket.RemoteEndPoint; }
+		public IPEndPoint LocalEndPoint { get => (IPEndPoint)_socket.LocalEndPoint; }
 		/// <summary>
 		/// Not initialized until the first message is received.
 		/// </summary>
