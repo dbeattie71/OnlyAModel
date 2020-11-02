@@ -1,4 +1,4 @@
-﻿namespace Messages.Models
+﻿namespace Models.World
 {
 	/// <summary>
 	/// PvP/PvE modes. Controls things like name colors over creatures' heads

@@ -1,6 +1,5 @@
 ﻿using Core;
-using Messages.Models;
-using Messages.Models.Character;
+using Models.Character;
 using System;
 using System.Collections.Generic;
 using System.Linq;

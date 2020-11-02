@@ -1,8 +1,5 @@
-﻿namespace Messages.Models.Character
+﻿namespace Models.Character
 {
-	/// <summary>
-	/// Model for <see cref="Messages.ServerToClient.CharacterOverview">CharacterOverview</see> and various <c>CharacterXxxRequest</c> messages.
-	/// </summary>
 	public class Character
 	{
 		public byte Level { get; set; }

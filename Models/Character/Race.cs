@@ -1,4 +1,4 @@
-﻿namespace Messages.Models
+﻿namespace Models.Character
 {
 	public enum Race : byte
 	{

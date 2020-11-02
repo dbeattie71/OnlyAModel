@@ -1,4 +1,4 @@
-﻿namespace Messages.Models.Character
+﻿namespace Models.Character
 {
 	public readonly struct Customization
 	{

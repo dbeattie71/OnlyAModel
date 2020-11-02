@@ -2,7 +2,7 @@
 
 namespace Messages
 {
-	public static class Extensions
+	public static class MethodInfoExtensions
 	{
 		public static string FullName(this MethodInfo method)
 		{

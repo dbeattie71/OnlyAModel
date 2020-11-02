@@ -1,6 +1,6 @@
 ﻿using System.Net;
 
-namespace Messages.Models
+namespace Models.World
 {
 	/// <summary>
 	/// To the player, a region is a set of contiguous zones they can walk

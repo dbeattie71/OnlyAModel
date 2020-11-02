@@ -2,12 +2,11 @@
 using Core.Event;
 using Messages;
 using Messages.ClientToServer;
-using Messages.Models;
-using Messages.Models.Character;
+using Models.Character;
 using Messages.ServerToClient;
-using System;
 using System.Collections.Generic;
 using System.Linq;
+using Models.World;
 
 namespace SinglePlayerDemo
 {
