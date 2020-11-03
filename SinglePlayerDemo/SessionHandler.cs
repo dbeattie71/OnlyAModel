@@ -86,6 +86,7 @@ namespace SinglePlayerDemo
 		public void OnCharacterCreateRequest(Server server, MessageEventArgs args, CharacterCreateRequest request)
 		{
 			Characters[request.Slot] = request.Character;
+			InitCharacter(request.Character);
 			// send CharacterOverview if we assign a location, provide starter gear, change the character's level, etc.
 			//OnCharacterOverviewRequest(server, args, new CharacterOverviewRequest(request.Character.Classification.Realm));
 		}
@@ -97,6 +98,7 @@ namespace SinglePlayerDemo
 			if (SelectedCharacter == null)
 			{
 				// TODO send RegionList
+				throw new System.NotImplementedException();
 			}
 			else
 			{
@@ -106,7 +108,36 @@ namespace SinglePlayerDemo
 			}
 		}
 
+		[AutowiredHandler]
+		public void OnGameOpenRequest(Server server, MessageEventArgs args, GameOpenRequest request)
+		{
+			// DoL records the current time as the last UDP ping time
+			var response = new GameOpenResponse(request.ConfirmUdp);
+			args.Session.Send(response);
+			var status = new CharacterStatus(SelectedCharacter);
+			args.Session.Send(status);
+			var points = new CharacterPoints(SelectedCharacter.Points);
+			args.Session.Send(points);
+			// TODO send DisableSkills whenever we have any skills
+			// DoL sends nothing if no skills are on cooldown
+		}
+
 		// temporary hacks
+
+		private void InitCharacter(Character c)
+		{
+			c.Status = new Status()
+			{
+				Health = 100,
+				MaxHealth = 100,
+				Mana = 100,
+				MaxMana = 100,
+				Endurance = 100,
+				MaxEndurance = 100,
+				Concentration = 100,
+				MaxConcentration = 100
+			};
+		}
 
 		private Region GetRegion(Session session, ushort id)
 		{
