@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Buffers.Binary;
+using System.ComponentModel;
 using System.Runtime.InteropServices;
 using System.Text;
 
@@ -100,6 +101,17 @@ namespace Messages
 			var len = Marshal.SizeOf(typeof(T));
 			MemoryMarshal.Write(_span.Slice(_position, len), ref value);
 			_position += len;
+		}
+
+		public void WriteFloat(float value)
+		{
+			// used for X/Y/Z coordinates, running speeds, and falling speeds
+			// DoL notes suggest the protocol only started using floats in 1.124
+			// the values being sent are mostly ints and shorts
+			// maybe we should model all those things as floats
+			var slice = _span.Slice(_position, sizeof(float));
+			BitConverter.TryWriteBytes(slice, value);
+			_position += sizeof(float);
 		}
 	}
 }

@@ -101,5 +101,13 @@ namespace Messages
 			_position += len;
 			return value;
 		}
+
+		public float ReadFloat()
+		{
+			var slice = _span.Slice(_position, sizeof(float));
+			var value = BitConverter.ToSingle(slice);
+			_position += sizeof(float);
+			return value;
+		}
 	}
 }

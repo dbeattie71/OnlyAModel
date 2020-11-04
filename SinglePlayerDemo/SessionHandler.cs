@@ -7,6 +7,7 @@ using Messages.ServerToClient;
 using System.Collections.Generic;
 using System.Linq;
 using Models.World;
+using System.Text;
 
 namespace SinglePlayerDemo
 {
@@ -88,7 +89,7 @@ namespace SinglePlayerDemo
 			Characters[request.Slot] = request.Character;
 			InitCharacter(request.Character);
 			// send CharacterOverview if we assign a location, provide starter gear, change the character's level, etc.
-			//OnCharacterOverviewRequest(server, args, new CharacterOverviewRequest(request.Character.Classification.Realm));
+			OnCharacterOverviewRequest(server, args, new CharacterOverviewRequest(request.Character.Classification.Realm));
 		}
 
 		[AutowiredHandler]
@@ -122,6 +123,52 @@ namespace SinglePlayerDemo
 			// DoL sends nothing if no skills are on cooldown
 		}
 
+		[AutowiredHandler]
+		public void OnWorldInitRequest(Server server, MessageEventArgs args, WorldInitRequest request)
+		{
+			// DoL sends a ton of messages here
+			// most of these are sent in WorldInitRequestHandler.cs
+			// not sure where AddFriend and the last CharacterStatusUpdate come from
+
+			// AddFriend - ???
+			// PositionAndObjectId
+			// Encumberance
+			// MaxSpeed
+			// MaxSpeed
+			// CharacterStatusUpdate
+			// InventoryUpdate (equipment)
+			// InventoryUpdate (inventory)
+			// VariousUpdate (skills)
+			// VariousUpdate (crafting skills)
+			// DelveInfo times a million ("update player")
+			// VariousUpdate (apparently part of "update player")
+			// MoneyUpdate
+			// StatsUpdate
+			// VariousUpdate (resists, icons, weapon and armor stats)
+			// QuestEntry
+			// CharacterStatusUpdate
+			// CharacterPointsUpdate
+			// Encumberance
+			// ConcentrationList
+			// CharacterStatusUpdate - ???
+			// ObjectGuildId
+			// DebugMode
+			// MaxSpeed
+			// ControlledHorse
+
+			var position = new PositionAndObjectId(SelectedCharacter);
+			args.Session.Send(position);
+			var debug = new DebugMode();
+			args.Session.Send(debug);
+		}
+
+		[AutowiredHandler]
+		public void OnCharacterInitRequest(Server server, MessageEventArgs args, CharacterInitRequest request)
+		{
+			var finished = new CharacterInitFinished();
+			args.Session.Send(finished);
+		}
+
 		// temporary hacks
 
 		private void InitCharacter(Character c)
@@ -137,6 +184,9 @@ namespace SinglePlayerDemo
 				Concentration = 100,
 				MaxConcentration = 100
 			};
+			// cotswold?
+			c.Region = 1;
+			c.Coordinates = new Coordinates(560467, 511652, 2344, 3398);
 		}
 
 		private Region GetRegion(Session session, ushort id)

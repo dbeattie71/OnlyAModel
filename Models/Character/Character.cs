@@ -1,4 +1,6 @@
-﻿namespace Models.Character
+﻿using Models.World;
+
+namespace Models.Character
 {
 	public class Character
 	{
@@ -16,5 +18,6 @@
 		public ushort Region { get; set; }
 		public string LocationDescription { get; set; }
 		public bool Sitting { get; set; }
+		public Coordinates Coordinates { get; set; }
 	}
 }
