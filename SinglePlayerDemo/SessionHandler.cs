@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Models.World;
 using System.Text;
+using System.Globalization;
 
 namespace SinglePlayerDemo
 {
@@ -169,6 +170,29 @@ namespace SinglePlayerDemo
 			args.Session.Send(finished);
 		}
 
+		[AutowiredHandler]
+		public void OnSlashCommand(Server server, MessageEventArgs args, SlashCommand command)
+		{
+			// client sends "&gc info 1" on entering the world
+			var split = command.Command.Split(' ');
+			switch(split[0].ToLower(CultureInfo.InvariantCulture))
+			{
+				case "&quit":
+					args.Session.Send(new Quit(false));
+					break;
+				case "&exit":
+					args.Session.Send(new Quit(true));
+					break;
+				case "&speed":
+					if(split.Length > 1 && ushort.TryParse(split[1], out ushort value))
+					{
+						var speed = new CharacterSpeed(value, 100, false);
+						args.Session.Send(speed);
+					}
+					break;
+			}
+		}
+
 		// temporary hacks
 
 		private void InitCharacter(Character c)
@@ -184,7 +208,7 @@ namespace SinglePlayerDemo
 				Concentration = 100,
 				MaxConcentration = 100
 			};
-			// cotswold?
+			// cotswold
 			c.Region = 1;
 			c.Coordinates = new Coordinates(560467, 511652, 2344, 3398);
 		}

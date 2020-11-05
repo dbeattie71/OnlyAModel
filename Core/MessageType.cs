@@ -52,7 +52,7 @@
 			ObjectUpdateRequest = 0xA5,         // 0x0D ^ 168
 			LoginRequest = 0xA7,                // 0x0F ^ 168
 			PositionUpdate = 0xA9,              // 0x01 ^ 168
-			CommandHandler = 0xAF,              // 0x07 ^ 168
+			SlashCommand = 0xAF,                // 0x07 ^ 168
 			PlayerTarget = 0xB0,                // 0x18 ^ 168
 			PickUpRequest = 0xB5,               // 0x1D ^ 168
 			PlayerHeadingUpdate = 0xBA,         // 0x12 ^ 168  also known as Short State
@@ -159,7 +159,7 @@
 			CharacterStatus = 0xAD,
 			PlayerDeath = 0xAE,
 			Message = 0xAF,
-			MaxSpeed = 0xB6,
+			CharacterSpeed = 0xB6,
 			RegionChanged = 0xB7,
 			PlayerHeading = 0xBA,
 			CombatAnimation = 0xBC,
