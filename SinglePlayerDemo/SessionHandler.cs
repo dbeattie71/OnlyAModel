@@ -190,7 +190,22 @@ namespace SinglePlayerDemo
 						args.Session.Send(speed);
 					}
 					break;
+				case "&up":
+					if (split.Length > 1 && ushort.TryParse(split[1], out ushort height))
+					{
+						var coords = SelectedCharacter.Coordinates;
+						SelectedCharacter.Coordinates = new Coordinates(coords.X, coords.Y, coords.Z + height, coords.Heading);
+						var position = new PositionAndObjectId(SelectedCharacter);
+						args.Session.Send(position);
+					}
+					break;
 			}
+		}
+
+		[AutowiredHandler]
+		public void OnPositionUpdate(Server server, MessageEventArgs args, PositionUpdate update)
+		{
+			SelectedCharacter.Coordinates = update.Coordinates;
 		}
 
 		// temporary hacks
