@@ -2,9 +2,8 @@
 
 namespace Core
 {
-	public interface IPayload
+	public interface IMarshallable
 	{
-		MessageType.ServerToClient Type { get; }
 		int Length { get; }
 		void Marshal(Span<byte> span);
 	}

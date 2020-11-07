@@ -34,9 +34,9 @@ namespace Core
 			_receiver.Start();
 		}
 
-		public void Send(IPayload payload)
+		public void Send(byte type, IMarshallable payload)
 		{
-			var message = new TcpMessage(payload);
+			var message = new TcpMessage(type, payload);
 			_sender.Send(message);
 		}
 

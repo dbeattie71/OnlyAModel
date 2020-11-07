@@ -1,5 +1,4 @@
-﻿using Core;
-using Models.Character;
+﻿using Models.Character;
 using System;
 using System.Collections.Generic;
 using System.Linq;

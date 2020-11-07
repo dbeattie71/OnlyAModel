@@ -16,7 +16,7 @@ namespace Core
 
 		public ReadOnlyMemory<byte> Payload => _data[3..];
 
-		internal TcpMessage(IPayload payload)
+		internal TcpMessage(byte type, IMarshallable payload)
 		{
 			// [0..2] length
 			// [2]    type
@@ -25,7 +25,7 @@ namespace Core
 			Memory<byte> data = new byte[payload.Length + 3];
 			var span = data.Span;
 			BinaryPrimitives.WriteUInt16BigEndian(span[0..2], (ushort)payload.Length);
-			span[2] = (byte)payload.Type;
+			span[2] = type;
 			payload.Marshal(span[3..]);
 			_data = data;
 		}

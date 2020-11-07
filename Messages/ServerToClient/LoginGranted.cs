@@ -1,5 +1,4 @@
-﻿using Core;
-using Models.World;
+﻿using Models.World;
 using System;
 
 namespace Messages.ServerToClient

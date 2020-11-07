@@ -1,4 +1,4 @@
-﻿namespace Core
+﻿namespace Messages
 {
 	public static class MessageType
 	{
@@ -150,8 +150,8 @@
 			CharacterPoints = 0x91,
 			Weather = 0x92,
 			DoorState = 0x99,
-			RegionList = 0x9E,		// was ClientRegions
-			CharacterRegion = 0xB1,	// was ClientRegion
+			RegionList = 0x9E,      // was ClientRegions
+			CharacterRegion = 0xB1, // was ClientRegion
 			ObjectUpdate = 0xA1,
 			RemoveObject = 0xA2,
 			Quit = 0xA4,
