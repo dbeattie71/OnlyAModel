@@ -11,7 +11,7 @@ namespace Messages.ServerToClient
 			_exitClient = (byte)(exitClient ? 0x01 : 0x00);
 		}
 
-		public MessageType.ServerToClient Type => MessageType.ServerToClient.Quit;
+		public byte MessageType => Messages.MessageType.ServerToClient.Quit;
 
 		public int Length => 2;
 

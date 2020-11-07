@@ -13,7 +13,7 @@ namespace Messages.ServerToClient
 			_timestamp = timestamp;
 		}
 
-		public MessageType.ServerToClient Type => MessageType.ServerToClient.PingReply;
+		public byte MessageType => Messages.MessageType.ServerToClient.PingReply;
 
 		public int Length => 16;
 

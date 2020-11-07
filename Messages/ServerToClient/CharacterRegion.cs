@@ -12,7 +12,7 @@ namespace Messages.ServerToClient
 			_region = region;
 		}
 
-		public MessageType.ServerToClient Type => MessageType.ServerToClient.CharacterRegion;
+		public byte MessageType => Messages.MessageType.ServerToClient.CharacterRegion;
 
 		public int Length => 52;
 

@@ -11,10 +11,10 @@ namespace Messages
 	[AttributeUsage(AttributeTargets.Method)]
 	public class AutowiredFactoryAttribute : Attribute
 	{
-		public MessageType.ClientToServer Type { get; }
+		public byte Type { get; }
 		public int Version { get; }
 
-		public AutowiredFactoryAttribute(MessageType.ClientToServer type, int version = 1125)
+		public AutowiredFactoryAttribute(byte type, int version = 1125)
 		{
 			Type = type;
 			Version = version;

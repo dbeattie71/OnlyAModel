@@ -12,7 +12,7 @@ namespace Messages.ServerToClient
 			_id = id;
 		}
 
-		public MessageType.ServerToClient Type => MessageType.ServerToClient.SessionId;
+		public byte MessageType => Messages.MessageType.ServerToClient.SessionId;
 
 		public int Length => 2;
 

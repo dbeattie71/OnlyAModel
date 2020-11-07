@@ -16,7 +16,7 @@ namespace Messages.ServerToClient
 			_status = status;
 		}
 
-		public MessageType.ServerToClient Type => MessageType.ServerToClient.NameCheckResponse;
+		public byte MessageType => Messages.MessageType.ServerToClient.NameCheckResponse;
 
 		public int Length => 58;
 

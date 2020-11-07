@@ -38,20 +38,20 @@ namespace Messages
 			var actions = factories.Keys
 				.ToDictionary(o => o, o => (Action<Server, MessageEventArgs>)((server, args) =>
 				{
-					var type = (MessageType.ClientToServer)args.Message.Type;
+					var type = args.Message.Type;
 					var payload = factories[type].Invoke(null, new object[] { args.Message.Payload });
 					handlers[payload.GetType()].Invoke(server, args, payload);
 				}));
 			return (server, args) =>
 			{
-				if (actions.TryGetValue((MessageType.ClientToServer)args.Message.Type, out Action<Server, MessageEventArgs> action))
+				if (actions.TryGetValue(args.Message.Type, out Action<Server, MessageEventArgs> action))
 				{
 					action.Invoke((Server)server, args);
 				}
 			};
 		}
 
-		private static IDictionary<MessageType.ClientToServer, MethodInfo> FindFactories(int version, IEnumerable<Assembly> assemblies)
+		private static IDictionary<byte, MethodInfo> FindFactories(int version, IEnumerable<Assembly> assemblies)
 		{
 			var methods = assemblies
 				.SelectMany(o => o.GetTypes())

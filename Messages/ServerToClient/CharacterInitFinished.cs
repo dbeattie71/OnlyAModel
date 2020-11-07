@@ -4,7 +4,7 @@ namespace Messages.ServerToClient
 {
 	public class CharacterInitFinished : IPayload
 	{
-		public MessageType.ServerToClient Type => MessageType.ServerToClient.CharacterInitFinished;
+		public byte MessageType => Messages.MessageType.ServerToClient.CharacterInitFinished;
 
 		public int Length => 1;
 

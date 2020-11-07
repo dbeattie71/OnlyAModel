@@ -6,7 +6,7 @@ namespace Messages
 	{
 		public static void Send(this Session session, IPayload payload)
 		{
-			session.Send((byte)payload.Type, payload);
+			session.Send(payload.MessageType, payload);
 		}
 	}
 }

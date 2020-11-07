@@ -12,7 +12,7 @@ namespace Messages.ServerToClient
 			_character = character;
 		}
 
-		public MessageType.ServerToClient Type => MessageType.ServerToClient.CharacterStatus;
+		public byte MessageType => Messages.MessageType.ServerToClient.CharacterStatus;
 
 		public int Length => 22;
 

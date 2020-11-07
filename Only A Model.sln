@@ -9,7 +9,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SinglePlayerDemo", "SingleP
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Messages", "Messages\Messages.csproj", "{DC390D86-1077-4154-BF6A-0651503DD7EF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Models", "Models\Models.csproj", "{E18519A7-7382-4A71-BA1C-8B2D03686905}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Models", "Models\Models.csproj", "{E18519A7-7382-4A71-BA1C-8B2D03686905}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

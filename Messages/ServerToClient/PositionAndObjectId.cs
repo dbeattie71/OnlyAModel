@@ -12,7 +12,7 @@ namespace Messages.ServerToClient
 			_character = character;
 		}
 
-		public MessageType.ServerToClient Type => MessageType.ServerToClient.PositionAndObjectID;
+		public byte MessageType => Messages.MessageType.ServerToClient.PositionAndObjectID;
 
 		public int Length => 32;
 

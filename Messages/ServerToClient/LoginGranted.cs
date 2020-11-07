@@ -20,7 +20,7 @@ namespace Messages.ServerToClient
 			_trialAccount = false;
 		}
 
-		public MessageType.ServerToClient Type => MessageType.ServerToClient.LoginGranted;
+		public byte MessageType => Messages.MessageType.ServerToClient.LoginGranted;
 
 		public int Length => _user.Length + _serverName.Length + 13;
 

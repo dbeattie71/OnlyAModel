@@ -7,7 +7,7 @@ namespace Messages.ServerToClient
 {
 	public class CharacterOverview : IPayload
 	{
-		public MessageType.ServerToClient Type => MessageType.ServerToClient.CharacterOverview;
+		public byte MessageType => Messages.MessageType.ServerToClient.CharacterOverview;
 
 		private IEnumerable<Character> _characters;
 

@@ -4,7 +4,7 @@ namespace Messages.ServerToClient
 {
 	public class DebugMode : IPayload
 	{
-		public MessageType.ServerToClient Type => MessageType.ServerToClient.DebugMode;
+		public byte MessageType => Messages.MessageType.ServerToClient.DebugMode;
 
 		public int Length => 2;
 

@@ -12,7 +12,7 @@ namespace Messages.ServerToClient
 			_points = points;
 		}
 
-		public MessageType.ServerToClient Type => MessageType.ServerToClient.CharacterPoints;
+		public byte MessageType => Messages.MessageType.ServerToClient.CharacterPoints;
 
 		public int Length => System.Runtime.InteropServices.Marshal.SizeOf(typeof(Points));
 

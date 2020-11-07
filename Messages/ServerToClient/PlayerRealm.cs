@@ -12,7 +12,7 @@ namespace Messages.ServerToClient
 			_realm = realm;
 		}
 
-		public MessageType.ServerToClient Type => MessageType.ServerToClient.PlayerRealm;
+		public byte MessageType => Messages.MessageType.ServerToClient.PlayerRealm;
 
 		public int Length => 13;
 

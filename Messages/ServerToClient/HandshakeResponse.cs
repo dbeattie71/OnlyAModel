@@ -13,7 +13,7 @@ namespace Messages.ServerToClient
 			_build = build;
 		}
 
-		public MessageType.ServerToClient Type => MessageType.ServerToClient.HandshakeResponse;
+		public byte MessageType => Messages.MessageType.ServerToClient.HandshakeResponse;
 
 		public int Length => _version.Length + 7;
 

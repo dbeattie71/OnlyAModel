@@ -19,7 +19,7 @@ namespace Messages.ServerToClient
 			_turningDisabled = (byte)(turningDisabled ? 0x01 : 0x00);
 		}
 
-		public MessageType.ServerToClient Type => MessageType.ServerToClient.CharacterSpeed;
+		public byte MessageType => Messages.MessageType.ServerToClient.CharacterSpeed;
 
 		public int Length => 4;
 

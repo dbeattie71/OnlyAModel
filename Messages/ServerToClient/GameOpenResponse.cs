@@ -16,7 +16,7 @@ namespace Messages.ServerToClient
 			_unknown = unknown;
 		}
 
-		public MessageType.ServerToClient Type => MessageType.ServerToClient.GameOpenResponse;
+		public byte MessageType => Messages.MessageType.ServerToClient.GameOpenResponse;
 
 		public int Length => 1;
 
