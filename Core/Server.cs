@@ -29,6 +29,7 @@ namespace Core
 
 		public IDisposable Start()
 		{
+			var disposables = new CompositeDisposable();
 			var socket = new Socket(Config.Address.AddressFamily,
 				SocketType.Stream, ProtocolType.Tcp);
 			var endpoint = new IPEndPoint(Config.Address, Config.Port);
@@ -36,11 +37,12 @@ namespace Core
 			socket.Listen(Config.Backlog);
 			for(int i = 0; i < Config.Threads; ++i)
 			{
-				var args = new SocketAsyncEventArgs();
+				var args = new SocketAsyncEventArgs() { UserToken = disposables };
 				args.Completed += AcceptComplete;
 				BeginAccept(socket, args);
 			}
-			return socket;
+			disposables.Add(socket);
+			return disposables;
 		}
 
 		private void BeginAccept(Socket socket, SocketAsyncEventArgs args)
@@ -62,7 +64,9 @@ namespace Core
 		{
 			if(args.SocketError == SocketError.Success)
 			{
-				var session = new Session(this, args.AcceptSocket);
+				var disposables = (CompositeDisposable)args.UserToken;
+				disposables.Add(args.AcceptSocket);
+				var session = new Session(this, args.AcceptSocket, () => disposables.Remove(args.AcceptSocket));
 				RaiseConnect(session, true);
 				session.Start();
 				args.AcceptSocket = null;
@@ -81,7 +85,6 @@ namespace Core
 
 		internal void RaiseConnect(Session session, bool connected)
 		{
-			// TODO track active sessions?
 			var evt = new ConnectionEventArgs(session, connected);
 			OnConnect?.Invoke(this, evt);
 		}

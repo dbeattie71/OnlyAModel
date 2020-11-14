@@ -21,12 +21,14 @@ namespace Core
 		private readonly Socket _socket;
 		private readonly Sender _sender;
 		private readonly Receiver _receiver;
+		private readonly Action _onDispose;
 
-		internal Session(Server server, Socket socket)
+		internal Session(Server server, Socket socket, Action onDispose)
 		{
 			_socket = socket;
 			_sender = new Sender(server, this, socket);
 			_receiver = new Receiver(server, this, socket);
+			_onDispose = onDispose;
 		}
 
 		internal void Start()
@@ -42,7 +44,7 @@ namespace Core
 
 		public void Dispose()
 		{
-			_socket.Dispose();
+			_onDispose();
 		}
 	}
 }
