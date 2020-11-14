@@ -78,8 +78,12 @@ namespace Core
 			}
 			else
 			{
-				var e = new Exception(args.SocketError.ToString());
-				RaiseError(null, e);
+				if (args.SocketError != SocketError.OperationAborted)
+				{
+					var e = new Exception(args.SocketError.ToString());
+					RaiseError(null, e);
+				}
+				args.Dispose();
 			}
 		}
 

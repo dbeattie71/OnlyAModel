@@ -61,8 +61,11 @@ namespace Core
 			}
 			else
 			{
-				var e = new Exception(args.SocketError.ToString());
-				_server.RaiseError(_session, e);
+				if (args.SocketError != SocketError.OperationAborted)
+				{
+					var e = new Exception(args.SocketError.ToString());
+					_server.RaiseError(_session, e);
+				}
 				args.Dispose();
 			}
 		}
