@@ -56,11 +56,11 @@ namespace MultiPlayer
 		{
 			if (args.Session == null)
 			{
-				_log.LogError("Server error: {0}", args.Error.Message);
+				_log.LogError(args.Error, "Server error: {0}", args.Error.Message);
 			}
 			else
 			{
-				_log.LogError("Session {0} error: {1}", args.Session.Id, args.Error.Message);
+				_log.LogError(args.Error, "Session {0} error: {1}", args.Session.Id, args.Error.Message);
 			}
 		}
 	}

@@ -53,6 +53,7 @@ namespace MultiPlayer
 					// TODO all the handlers!
 					// if any handlers are stateful, make them transient
 					services.AddSingleton<AuthService>();
+					services.AddSingleton<CharacterService>();
 					services.AddSingleton((sp) => CreateServer(sp));
 					services.AddHostedService<Worker>();
 				})

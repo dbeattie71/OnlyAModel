@@ -3,18 +3,36 @@ using Core.Event;
 using Messages;
 using Messages.ClientToServer;
 using Messages.ServerToClient;
+using Microsoft.Extensions.Logging;
 using Models.World;
+using MultiPlayer.Services;
+using System;
 
 namespace MultiPlayer.Handlers
 {
 	public class WorldEntryHandler : IHandler
 	{
+		private readonly CharacterService _characters;
+		private readonly ILogger _log;
+
+		public WorldEntryHandler(CharacterService characters, ILogger<WorldEntryHandler> log)
+		{
+			_characters = characters;
+			_log = log;
+		}
+
 		[AutowiredHandler]
 		public void OnRegionListRequest(Server server, MessageEventArgs args, RegionListRequest request)
 		{
-			var state = args.Session.Data();
-			state.SelectedCharacter = state.Characters[request.CharacterSlot];
-			if (state.SelectedCharacter == null)
+			var data = args.Session.Data();
+			// TODO if this never throws, we don't need the character service
+			var ch = _characters.GetBySlot(data.User, request.CharacterSlot);
+			if (data.SelectedCharacter != ch)
+			{
+				throw new Exception("Apparently we do need to set SelectedCharacter in WorldEntryHandler...");
+				//data.SelectedCharacter = ch;
+			}
+			if (data.SelectedCharacter == null)
 			{
 				// TODO send RegionList?
 				throw new System.NotImplementedException();
@@ -92,7 +110,8 @@ namespace MultiPlayer.Handlers
 		[AutowiredHandler]
 		public void OnCharacterInitRequest(Server server, MessageEventArgs args, CharacterInitRequest request)
 		{
-			// TODO document when this is called
+			// called when the progress bar completes on the loading screen
+			// TODO this might fit better in PositionHandler
 			var finished = new CharacterInitFinished();
 			args.Session.Send(finished);
 		}
