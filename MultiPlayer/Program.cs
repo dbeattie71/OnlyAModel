@@ -4,6 +4,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using MultiPlayer.Handlers;
+using MultiPlayer.Services;
 using Serilog;
 using System;
 using System.Collections.Generic;
@@ -51,6 +52,7 @@ namespace MultiPlayer
 					services.AddSingleton<IHandler, CommandHandler>();
 					// TODO all the handlers!
 					// if any handlers are stateful, make them transient
+					services.AddSingleton<AuthService>();
 					services.AddSingleton((sp) => CreateServer(sp));
 					services.AddHostedService<Worker>();
 				})
