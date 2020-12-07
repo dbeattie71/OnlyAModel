@@ -11,7 +11,7 @@ namespace MultiPlayer.Handlers
 		public void OnPositionUpdate(Server server, MessageEventArgs args, PositionUpdate update)
 		{
 			// TODO notify session manager
-			args.Session.GetState().SelectedCharacter.Coordinates = update.Coordinates;
+			args.Session.Data().SelectedCharacter.Coordinates = update.Coordinates;
 		}
 
 		// TODO handle heading update

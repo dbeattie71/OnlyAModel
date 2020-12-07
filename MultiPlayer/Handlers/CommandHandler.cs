@@ -33,7 +33,7 @@ namespace MultiPlayer.Handlers
 				case "&up":
 					if (split.Length > 1 && ushort.TryParse(split[1], out ushort height))
 					{
-						var ch = args.Session.GetState().SelectedCharacter;
+						var ch = args.Session.Data().SelectedCharacter;
 						var coords = ch.Coordinates;
 						ch.Coordinates = new Coordinates(coords.X, coords.Y, coords.Z + height, coords.Heading);
 						var position = new PositionAndObjectId(ch);

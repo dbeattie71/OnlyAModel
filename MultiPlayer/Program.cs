@@ -62,13 +62,14 @@ namespace MultiPlayer
 			builder.Add(sp.GetRequiredService<ServerLog>());
 			builder.OnMessageReceived += (server, args) =>
 			{
-				if(args.Session.GetState() == null)
+				if(args.Session.Data() == null)
 				{
 					var handlers = sp.GetRequiredService<IEnumerable<IHandler>>().ToArray();
 					var handler = Autowire.CreateMessageHandler(args.Session.Version.ProtocolVersion, handlers);
-					args.Session.SetState(new SessionState(handler));
+					var data = new SessionData() { OnMessageReceived = handler };
+					args.Session.UserData = data;
 				}
-				args.Session.GetState().OnMessageReceived(server, args);
+				args.Session.Data().OnMessageReceived(server, args);
 			};
 			return builder.Build();
 		}

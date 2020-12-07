@@ -12,7 +12,7 @@ namespace MultiPlayer.Handlers
 		[AutowiredHandler]
 		public void OnRegionListRequest(Server server, MessageEventArgs args, RegionListRequest request)
 		{
-			var state = args.Session.GetState();
+			var state = args.Session.Data();
 			state.SelectedCharacter = state.Characters[request.CharacterSlot];
 			if (state.SelectedCharacter == null)
 			{
@@ -32,7 +32,7 @@ namespace MultiPlayer.Handlers
 			// TODO make region addresses part of the server configuration
 			// a server behind a NAT firewall does not know what the client thinks its address is
 			var ep = session.LocalEndPoint;
-			return new Region(session.GetState().SelectedCharacter.Region, ep.Address, ep.Port);
+			return new Region(session.Data().SelectedCharacter.Region, ep.Address, ep.Port);
 		}
 
 		[AutowiredHandler]
@@ -41,7 +41,7 @@ namespace MultiPlayer.Handlers
 			// DoL records the current time as the last UDP ping time
 			var response = new GameOpenResponse(request.ConfirmUdp);
 			args.Session.Send(response);
-			var ch = args.Session.GetState().SelectedCharacter;
+			var ch = args.Session.Data().SelectedCharacter;
 			var status = new CharacterStatus(ch);
 			args.Session.Send(status);
 			var points = new CharacterPoints(ch.Points);
@@ -83,7 +83,7 @@ namespace MultiPlayer.Handlers
 			// MaxSpeed
 			// ControlledHorse
 
-			var position = new PositionAndObjectId(args.Session.GetState().SelectedCharacter);
+			var position = new PositionAndObjectId(args.Session.Data().SelectedCharacter);
 			args.Session.Send(position);
 			var debug = new DebugMode();
 			args.Session.Send(debug);

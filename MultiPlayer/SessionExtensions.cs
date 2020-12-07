@@ -4,14 +4,9 @@ namespace MultiPlayer
 {
 	internal static class SessionExtensions
 	{
-		internal static SessionState GetState(this Session session)
+		internal static SessionData Data(this Session session)
 		{
-			return (SessionState)session.UserData;
-		}
-
-		internal static void SetState(this Session session, SessionState state)
-		{
-			session.UserData = state;
+			return (SessionData)session.UserData;
 		}
 	}
 }

@@ -14,7 +14,7 @@ namespace MultiPlayer.Handlers
 		[AutowiredHandler]
 		public void OnCharacterSelectRequest(Server server, MessageEventArgs args, CharacterSelectRequest request)
 		{
-			var state = args.Session.GetState();
+			var state = args.Session.Data();
 			state.SelectedCharacter = state.Characters.SingleOrDefault(o => request.Name.EqualsIgnoreCase(o?.Name));
 			// notes in DoL say live sends LoginGranted again, but it doesn't seem to be necessary
 			// TODO does the ID we give to the client even matter?
@@ -36,7 +36,7 @@ namespace MultiPlayer.Handlers
 			{
 				// client is requesting character details for a particular realm
 				int offset = ((int)request.Realm - 1) * 10;
-				var response = new CharacterOverview(args.Session.GetState().Characters.Skip(offset).Take(10));
+				var response = new CharacterOverview(args.Session.Data().Characters.Skip(offset).Take(10));
 				args.Session.Send(response);
 			}
 		}
@@ -51,7 +51,7 @@ namespace MultiPlayer.Handlers
 				status = NameStatus.Prohibited;
 			}
 			// TODO check session manager (and eventually character service) for name availability
-			else if (args.Session.GetState().Characters.Any(o => request.Name.EqualsIgnoreCase(o?.Name)))
+			else if (args.Session.Data().Characters.Any(o => request.Name.EqualsIgnoreCase(o?.Name)))
 			{
 				status = NameStatus.Unavailable;
 			}
@@ -62,7 +62,7 @@ namespace MultiPlayer.Handlers
 		[AutowiredHandler]
 		public void OnCharacterCreateRequest(Server server, MessageEventArgs args, CharacterCreateRequest request)
 		{
-			args.Session.GetState().Characters[request.Slot] = request.Character;
+			args.Session.Data().Characters[request.Slot] = request.Character;
 			InitCharacter(request.Character);
 			// send CharacterOverview if we assign a location, provide starter gear, change the character's level, etc.
 			OnCharacterOverviewRequest(server, args, new CharacterOverviewRequest(request.Character.Classification.Realm));
