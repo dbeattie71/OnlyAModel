@@ -3,6 +3,10 @@ using System;
 
 namespace Messages.ClientToServer
 {
+	/// <summary>
+	/// Client sends this at regular intervals even if the character isn't
+	/// moving. Other clients may need to be updated at the same interval.
+	/// </summary>
 	public class PositionUpdate
 	{
 		public readonly Coordinates Coordinates;

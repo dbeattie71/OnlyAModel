@@ -19,5 +19,6 @@ namespace Models.Character
 		public string LocationDescription { get; set; }
 		public bool Sitting { get; set; }
 		public Coordinates Coordinates { get; set; }
+		public ushort Heading { get; set; }
 	}
 }

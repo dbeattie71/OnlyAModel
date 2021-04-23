@@ -112,6 +112,18 @@ namespace MultiPlayer.Handlers
 		{
 			// called when the progress bar completes on the loading screen
 			// TODO this might fit better in PositionHandler
+			// DoL does a bunch of stuff in this handler
+			// SendUpdatePoints
+			// SendRegionColorScheme
+			// SendMobsAndMobEquipmentToPlayer
+			// SendTime
+			// notifies region model of player enter
+			// notifies character model of game enter or region change
+			// restores character effects
+			// starts hp/mana/endo regen, invulnerability timer
+			// sends guild messages and house rent reminders
+			// check if player is logging into hostile keep, instance, etc.
+			// various other stuff like this
 			var finished = new CharacterInitFinished();
 			args.Session.Send(finished);
 		}

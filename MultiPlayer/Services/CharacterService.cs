@@ -26,7 +26,7 @@ namespace MultiPlayer.Services
 
 		internal Character GetByName(string user, string name) => Chars(user).SingleOrDefault(o => name.EqualsIgnoreCase(o?.Name));
 
-		internal bool NameTaken(string name) => _characters.Values.SelectMany(o => o).Any(o => name.EqualsIgnoreCase(o?.Name));
+		internal bool NameExists(string name) => _characters.Values.SelectMany(o => o).Any(o => name.EqualsIgnoreCase(o?.Name));
 
 		private void InitCharacter(Character c)
 		{

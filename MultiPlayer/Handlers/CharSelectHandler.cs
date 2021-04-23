@@ -57,8 +57,7 @@ namespace MultiPlayer.Handlers
 			{
 				status = NameStatus.Prohibited;
 			}
-			// TODO check session manager (and eventually character service) for name availability
-			else if (_service.NameTaken(request.Name))
+			else if (_service.NameExists(request.Name))
 			{
 				status = NameStatus.Unavailable;
 			}
