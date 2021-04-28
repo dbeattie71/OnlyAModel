@@ -22,11 +22,11 @@ namespace SinglePlayerDemo
 
 		private static void OnMessageReceived(object server, MessageEventArgs args)
 		{
-			if(args.Session.UserData == null)
+			if(args.Session.Data == null)
 			{
-				args.Session.UserData = Autowire.CreateMessageHandler(args.Session.Version.ProtocolVersion, new SessionHandler());
+				args.Session.Data = Autowire.CreateMessageHandler(args.Session.Version.ProtocolVersion, new SessionHandler());
 			}
-			((EventHandler<MessageEventArgs>)args.Session.UserData)(server, args);
+			((EventHandler<MessageEventArgs>)args.Session.Data)(server, args);
 		}
 	}
 }

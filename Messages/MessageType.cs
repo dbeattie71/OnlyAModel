@@ -2,11 +2,17 @@
 
 namespace Messages
 {
+	/// <summary>
+	/// Message type constants.
+	/// </summary>
 	public static class MessageType
 	{
-		public static class ClientToServer
+		/// <summary>
+		/// Client to server.
+		/// </summary>
+		public static class Client
 		{
-			private static readonly string[] _names = GetNames(typeof(ClientToServer));
+			private static readonly string[] _names = GetNames(typeof(Client));
 
 			public static string GetName(byte value, int protocolVersion)
 			{
@@ -93,9 +99,12 @@ namespace Messages
 			public const byte CharacterCreateRequest = 0xFF;
 		}
 
-		public static class ServerToClient
+		/// <summary>
+		/// Server to client.
+		/// </summary>
+		public static class Server
 		{
-			private static readonly string[] _names = GetNames(typeof(ServerToClient));
+			private static readonly string[] _names = GetNames(typeof(Server));
 
 			public static string GetName(byte value, int protocolVersion)
 			{

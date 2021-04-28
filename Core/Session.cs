@@ -16,7 +16,10 @@ namespace Core
 		/// Not initialized until the first message is received.
 		/// </summary>
 		public ClientVersion Version { get; internal set; }
-		public object UserData { get; set; }
+		/// <summary>
+		/// Application data associated with this session.
+		/// </summary>
+		public object Data { get; set; }
 
 		private readonly Socket _socket;
 		private readonly Sender _sender;

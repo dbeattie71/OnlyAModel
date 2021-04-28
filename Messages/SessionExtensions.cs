@@ -4,9 +4,9 @@ namespace Messages
 {
 	public static class SessionExtensions
 	{
-		public static void Send(this Session session, IPayload payload)
+		public static void Send(this Session session, IServerMessage message)
 		{
-			session.Send(payload.MessageType, payload);
+			session.Send(message.Type, message);
 		}
 	}
 }

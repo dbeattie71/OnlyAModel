@@ -22,9 +22,9 @@ namespace SinglePlayerDemo
 
 		public void OnMessageSent(object server, MessageEventArgs args)
 		{
-			if(args.Message.Type != MessageType.ServerToClient.PingReply)
+			if(args.Message.Type != MessageType.Server.PingReply)
 			{
-				var type = MessageType.ServerToClient.GetName(args.Message.Type, args.Session.Version.ProtocolVersion) ?? "unknown";
+				var type = MessageType.Server.GetName(args.Message.Type, args.Session.Version.ProtocolVersion) ?? "unknown";
 				Console.WriteLine("Session {0} <= {1}", args.Session.Id, type);
 
 				var arr = args.Message.Data.ToArray();
@@ -35,9 +35,9 @@ namespace SinglePlayerDemo
 
 		public void OnMessageReceived(object server, MessageEventArgs args)
 		{
-			if(args.Message.Type != MessageType.ClientToServer.PingRequest)
+			if(args.Message.Type != MessageType.Client.PingRequest)
 			{
-				var type = MessageType.ClientToServer.GetName(args.Message.Type, args.Session.Version.ProtocolVersion) ?? "unknown";
+				var type = MessageType.Client.GetName(args.Message.Type, args.Session.Version.ProtocolVersion) ?? "unknown";
 				Console.WriteLine("Session {0} => {1}", args.Session.Id, type);
 
 				var arr = args.Message.Data.ToArray();
