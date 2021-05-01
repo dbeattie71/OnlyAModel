@@ -15,8 +15,15 @@ namespace Core
 		/// <summary>
 		/// Not initialized until the first message is received.
 		/// </summary>
-		public ClientVersion Version { get; internal set; }
-		public object UserData { get; set; }
+		public ClientInfo ClientInfo { get; internal set; }
+		/// <summary>
+		/// Not initialized until the first message is received.
+		/// </summary>
+		public int ProtocolVersion { get; internal set; }
+		/// <summary>
+		/// Application data associated with this session.
+		/// </summary>
+		public object Data { get; set; }
 
 		private readonly Socket _socket;
 		private readonly Sender _sender;
@@ -36,9 +43,16 @@ namespace Core
 			_receiver.Start();
 		}
 
+		[Obsolete]
 		public void Send(byte type, IMarshallable payload)
 		{
 			var message = new TcpMessage(type, payload);
+			_sender.Send(message);
+		}
+
+		public void Send(ISendable sendable)
+		{
+			var message = new TcpMessage(sendable, ProtocolVersion);
 			_sender.Send(message);
 		}
 

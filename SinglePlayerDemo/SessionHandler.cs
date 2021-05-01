@@ -1,14 +1,12 @@
 ﻿using Core;
 using Core.Event;
 using Messages;
-using Messages.ClientToServer;
-using Models.Character;
-using Messages.ServerToClient;
+using Messages.Client;
+using Messages.Server;
 using System.Collections.Generic;
 using System.Linq;
-using Models.World;
-using System.Text;
 using System.Globalization;
+using Messages.Models;
 
 namespace SinglePlayerDemo
 {
@@ -20,7 +18,7 @@ namespace SinglePlayerDemo
 		[AutowiredHandler]
 		public void OnCryptKeyRequest(Server server, MessageEventArgs args, Handshake handshake)
 		{
-			var response = new HandshakeResponse(args.Session.Version.ToString(), args.Session.Version.Build);
+			var response = new HandshakeResponse(args.Session.ClientInfo.Version, args.Session.ClientInfo.Build);
 			args.Session.Send(response);
 		}
 

@@ -2,6 +2,7 @@
 
 namespace Core
 {
+	[Obsolete]
 	public interface IMarshallable
 	{
 		int Length { get; }
