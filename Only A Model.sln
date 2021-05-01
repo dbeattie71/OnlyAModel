@@ -11,6 +11,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Messages", "Messages\Messag
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Protocol", "Protocol\Protocol.csproj", "{7235BB9B-E228-4AB9-8FC1-62E2B0807AB1}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Demo", "Demo\Demo.csproj", "{D8AE6D96-E75A-459F-AA8B-5D41301F1036}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -33,6 +35,10 @@ Global
 		{7235BB9B-E228-4AB9-8FC1-62E2B0807AB1}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7235BB9B-E228-4AB9-8FC1-62E2B0807AB1}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7235BB9B-E228-4AB9-8FC1-62E2B0807AB1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D8AE6D96-E75A-459F-AA8B-5D41301F1036}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D8AE6D96-E75A-459F-AA8B-5D41301F1036}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D8AE6D96-E75A-459F-AA8B-5D41301F1036}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D8AE6D96-E75A-459F-AA8B-5D41301F1036}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -1,5 +1,4 @@
-﻿using Core;
-using Core.Event;
+﻿using Core.Event;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,7 +8,7 @@ namespace Protocol.Autowire
 {
 	public static class Autowire
 	{
-		public static EventHandler<MessageEventArgs> CreateMessageHandler(IEnumerable<object> observers)
+		public static EventHandler<MessageEventArgs> CreateHandler(IEnumerable<object> observers)
 		{
 			var unmarshallers = FindUnmarshallers();
 			var types = unmarshallers.Values.Select(o => o.ReturnType);
@@ -34,10 +33,10 @@ namespace Protocol.Autowire
 			{
 				if(unmarshallers.TryGetValue(args.Message.Type, out MethodInfo unmarshaller))
 				{
-					var obj = unmarshaller.Invoke(null, new object[] { args.Message.Payload, args.Session.ProtocolVersion });
+					var obj = unmarshaller.Invoke(null, new object[] { args });
 					foreach (var handler in handlers[obj.GetType()])
 					{
-						handler.Invoke((Server)server, args, obj);
+						handler.Invoke(args, obj);
 					}
 				}
 			};
@@ -75,19 +74,18 @@ namespace Protocol.Autowire
 					throw new Exception(msg);
 				}
 				var p = method.GetParameters();
-				if (p.Count() != 2
-					|| p.First().ParameterType != typeof(ReadOnlyMemory<byte>)
-					|| p.Last().ParameterType != typeof(int))
+				if (p.Count() != 1 || p.Single().ParameterType != typeof(MessageEventArgs))
 				{
 					var types = string.Join(", ", p.Select(o => o.ParameterType.FullName));
 					var msg = string.Format("{0} cannot be applied to method {1} with parameters ({2}).", typeof(UnmarshallerAttribute).FullName, method.FullName(), types);
+					throw new Exception(msg);
 				}
 			}
 		}
 
-		private static IDictionary<Type, List<Action<Server, MessageEventArgs, object>>> FindHandlers(IEnumerable<object> observers)
+		private static IDictionary<Type, List<Action<MessageEventArgs, object>>> FindHandlers(IEnumerable<object> observers)
 		{
-			var handlers = new Dictionary<Type, List<Action<Server, MessageEventArgs, object>>>();
+			var handlers = new Dictionary<Type, List<Action<MessageEventArgs, object>>>();
 			foreach(var observer in observers)
 			{
 				var methods = observer.GetType().GetMethods().Where(o => o.GetCustomAttribute<HandlerAttribute>() != null);
@@ -97,9 +95,9 @@ namespace Protocol.Autowire
 					var type = method.GetParameters().Last().ParameterType;
 					if(!handlers.ContainsKey(type))
 					{
-						handlers.Add(type, new List<Action<Server, MessageEventArgs, object>>());
+						handlers.Add(type, new List<Action<MessageEventArgs, object>>());
 					}
-					handlers[type].Add((server, args, payload) => method.Invoke(observer, new object[] { server, args, payload }));
+					handlers[type].Add((args, payload) => method.Invoke(observer, new object[] { args, payload }));
 				}
 			}
 			return handlers;
@@ -119,8 +117,8 @@ namespace Protocol.Autowire
 					var msg = string.Format("{0} cannot be applied to non-public method {1}.", typeof(HandlerAttribute).FullName, method.FullName());
 					throw new Exception(msg);
 				}
-				var p = method.GetParameters().ToArray();
-				if (p.Length != 3 || p[0].ParameterType != typeof(Server) || p[1].ParameterType != typeof(MessageEventArgs))
+				var p = method.GetParameters();
+				if (p.Count() != 2 || p.First().ParameterType != typeof(MessageEventArgs))
 				{
 					var types = string.Join(", ", p.Select(o => o.ParameterType.FullName));
 					var msg = string.Format("{0} cannot be applied to method {1} with parameters ({2}).", typeof(HandlerAttribute).FullName, method.FullName(), types);
