@@ -4,6 +4,7 @@ using Protocol.Autowire;
 using Protocol.Client;
 using Protocol.Models;
 using Protocol.Server;
+using System.Globalization;
 using System.Linq;
 using System.Net;
 
@@ -18,7 +19,7 @@ namespace Demo
 		}
 
 		[Handler]
-		public void OnLogin(MessageEventArgs args, Login login)
+		public void OnLoginRequest(MessageEventArgs args, LoginRequest login)
 		{
 			args.Session.Send(new LoginGranted(login.User, "Only A Model", PvPMode.PvE));
 		}
@@ -33,7 +34,7 @@ namespace Demo
 		private Character _selected = null;
 
 		[Handler]
-		public void OnCharacterSelect(MessageEventArgs args, CharacterSelect request)
+		public void OnCharacterSelectRequest(MessageEventArgs args, CharacterSelectRequest request)
 		{
 			_selected = _characters.SingleOrDefault(o => request.Name.EqualsIgnoreCase(o?.Name));
 			// notes in DoL say live sends LoginGranted again, but it doesn't seem to be necessary
@@ -79,16 +80,30 @@ namespace Demo
 		}
 
 		[Handler]
-		public void OnCharacterCreate(MessageEventArgs args, CharacterCreate request)
+		public void OnCharacterCreateRequest(MessageEventArgs args, CharacterCreateRequest request)
 		{
 			_characters[request.Slot] = request.Character;
-			InitCharacter(request.Character);
-			// send CharacterOverview to update the client if we assign a location, provide starter gear, change the character's level, etc.
+			// init character
+			request.Character.Status = new Status()
+			{
+				Health = 100,
+				MaxHealth = 100,
+				Mana = 100,
+				MaxMana = 100,
+				Endurance = 100,
+				MaxEndurance = 100,
+				Concentration = 100,
+				MaxConcentration = 100
+			};
+			// everyone starts in cotswold
+			request.Character.Region = 1;
+			request.Character.Coordinates = new Coordinates(560467, 511652, 2344, 3398);
+			// update the client with location, stats, level, starter gear, etc.
 			OnCharacterOverviewRequest(args, new CharacterOverviewRequest(request.Character.Classification.Realm));
 		}
 
 		[Handler]
-		public void OnCharacterRegionRequest(MessageEventArgs args, CharacterRegionRequest request)
+		public void OnRegionRequest(MessageEventArgs args, RegionRequest request)
 		{
 			_selected = _characters[request.CharacterSlot];
 			if (_selected == null)
@@ -107,24 +122,101 @@ namespace Demo
 			}
 		}
 
-		// hacks
-
-		private void InitCharacter(Character c)
+		[Handler]
+		public void OnGameOpenRequest(MessageEventArgs args, GameOpenRequest request)
 		{
-			c.Status = new Status()
+			// DoL records the current time as the last UDP ping time
+			var response = new GameOpenResponse(request.ConfirmUdp);
+			args.Session.Send(response);
+			var status = new CharacterStatus(_selected);
+			args.Session.Send(status);
+			var points = new CharacterPoints(_selected.Points);
+			args.Session.Send(points);
+			// TODO send DisableSkills whenever we have any skills
+			// DoL sends nothing if no skills are on cooldown
+		}
+
+		[Handler]
+		public void OnWorldInit(MessageEventArgs args, WorldInitRequest request)
+		{
+			// DoL sends a ton of messages here
+			// most of these are sent in WorldInitRequestHandler.cs
+			// not sure where AddFriend and the last CharacterStatusUpdate come from
+
+			// AddFriend - ???
+			// PositionAndObjectId
+			// Encumberance
+			// MaxSpeed
+			// MaxSpeed
+			// CharacterStatusUpdate
+			// InventoryUpdate (equipment)
+			// InventoryUpdate (inventory)
+			// VariousUpdate (skills)
+			// VariousUpdate (crafting skills)
+			// DelveInfo times a million ("update player")
+			// VariousUpdate (apparently part of "update player")
+			// MoneyUpdate
+			// StatsUpdate
+			// VariousUpdate (resists, icons, weapon and armor stats)
+			// QuestEntry
+			// CharacterStatusUpdate
+			// CharacterPointsUpdate
+			// Encumberance
+			// ConcentrationList
+			// CharacterStatusUpdate - ???
+			// ObjectGuildId
+			// DebugMode
+			// MaxSpeed
+			// ControlledHorse
+
+			var position = new PositionAndObjectId(_selected);
+			args.Session.Send(position);
+			var debug = new DebugMode();
+			args.Session.Send(debug);
+		}
+
+		[Handler]
+		public void OnCharacterInitRequest(MessageEventArgs args, CharacterInitRequest _)
+		{
+			args.Session.Send(new CharacterInitFinished());
+		}
+
+		[Handler]
+		public void OnPositionUpdate(MessageEventArgs args, PositionUpdate update)
+		{
+			_selected.Coordinates = update.Coordinates;
+		}
+
+		[Handler]
+		public void OnSlashCommand(MessageEventArgs args, SlashCommand command)
+		{
+			// client sends "&gc info 1" on entering the world
+			var split = command.Command.Split(' ');
+			switch (split[0].ToLower(CultureInfo.InvariantCulture))
 			{
-				Health = 100,
-				MaxHealth = 100,
-				Mana = 100,
-				MaxMana = 100,
-				Endurance = 100,
-				MaxEndurance = 100,
-				Concentration = 100,
-				MaxConcentration = 100
-			};
-			// cotswold
-			c.Region = 1;
-			c.Coordinates = new Coordinates(560467, 511652, 2344, 3398);
+				case "&quit":
+					args.Session.Send(new Quit(false));
+					break;
+				case "&exit":
+					args.Session.Send(new Quit(true));
+					break;
+				case "&speed":
+					if (split.Length > 1 && ushort.TryParse(split[1], out ushort value))
+					{
+						var speed = new CharacterSpeed(value, 100, false);
+						args.Session.Send(speed);
+					}
+					break;
+				case "&up":
+					if (split.Length > 1 && ushort.TryParse(split[1], out ushort height))
+					{
+						var coords = _selected.Coordinates;
+						_selected.Coordinates = new Coordinates(coords.X, coords.Y, coords.Z + height, coords.Heading);
+						var position = new PositionAndObjectId(_selected);
+						args.Session.Send(position);
+					}
+					break;
+			}
 		}
 	}
 }

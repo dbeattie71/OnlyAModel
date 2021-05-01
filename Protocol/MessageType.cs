@@ -29,7 +29,7 @@ namespace Protocol
 			public const byte HousePlaceItem = 0x0C;
 			public const byte PlayerPickupHouseItem = 0x0D;
 			public const byte HouseDecorationRotate = 0x0E;
-			public const byte CharacterSelect = 0x10;
+			public const byte CharacterSelectRequest = 0x10;
 			public const byte MarketSearchRequest = 0x11;
 			public const byte UDPInitRequest = 0x14;
 			public const byte HouseDecorationRequest = 0x18;
@@ -61,11 +61,11 @@ namespace Protocol
 			public const byte PetWindow = 0x8A;
 			public const byte PlayerRegionChangeRequest = 0x90;
 			public const byte DoorRequest = 0x99;
-			public const byte CharacterRegionRequest = 0x9D;
+			public const byte RegionRequest = 0x9D;
 			public const byte DisbandFromGroup = 0x9F;
 			public const byte Ping = 0xA3;
 			public const byte ObjectUpdateRequest = 0xA5;
-			public const byte Login = 0xA7;
+			public const byte LoginRequest = 0xA7;
 			public const byte PositionUpdate = 0xA9;
 			public const byte SlashCommand = 0xAF;
 			public const byte PlayerTarget = 0xB0;
@@ -87,7 +87,7 @@ namespace Protocol
 			public const byte PlayerAppraiseItemRequest = 0xE0;
 			public const byte EmblemDialogResponse = 0xE2;
 			public const byte ShipHookPoint = 0xE4;
-			public const byte PlayerInitRequest = 0xE8;
+			public const byte CharacterInitRequest = 0xE8;
 			public const byte ModifyTrade = 0xEB;
 			public const byte PlayerGroundTarget = 0xEC;
 			public const byte CraftRequest = 0xED;
@@ -127,7 +127,7 @@ namespace Protocol
 			public const byte SpellEffectAnimation = 0x1B;
 			public const byte ConsignmentMerchantMoney = 0x1E;
 			public const byte MarketExplorerWindow = 0x1F;
-			public const byte PositionAndObjectID = 0x20;
+			public const byte PositionAndObjectId = 0x20;
 			public const byte DebugMode = 0x21;
 			public const byte HandshakeResponse = 0x22;
 			public const byte SessionId = 0x28;

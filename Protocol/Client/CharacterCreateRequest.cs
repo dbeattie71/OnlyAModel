@@ -4,19 +4,19 @@ using Protocol.Models;
 
 namespace Protocol.Client
 {
-	public class CharacterCreate
+	public class CharacterCreateRequest
 	{
 		public byte Slot { get; }
 		public Character Character { get; }
 
-		private CharacterCreate(byte slot, Character character)
+		private CharacterCreateRequest(byte slot, Character character)
 		{
 			Slot = slot;
 			Character = character;
 		}
 
 		[Unmarshaller(MessageType.Client.CharacterCreateRequest)]
-		public static CharacterCreate Unmarshal(MessageEventArgs args)
+		public static CharacterCreateRequest Unmarshal(MessageEventArgs args)
 		{
 			var reader = new SpanReader(args.Message.Payload.Span);
 			var slot = reader.ReadByte();
@@ -40,7 +40,7 @@ namespace Protocol.Client
 			c.Stats = reader.Read<Stats>();
 			c.Equipment = reader.Read<Equipment>(); // empty
 			; // 4 bytes left
-			return new CharacterCreate(slot, c);
+			return new CharacterCreateRequest(slot, c);
 		}
 
 	}
