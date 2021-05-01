@@ -1,6 +1,9 @@
 ﻿namespace Core.Data
 {
-	public struct ClientContent
+	/// <summary>
+	/// Available game content.
+	/// </summary>
+	public struct Content
 	{
 		// expansions
 		private const int CLASSIC = 1;
@@ -10,7 +13,7 @@
 		private const int DR = 5;
 		private const int LAB = 6;
 		// addons
-		private const int NEWER_FRONTIERS = 0x20;
+		private const int NEW_NEW_FRONTIERS = 0x20;
 		private const int FOUNDATIONS = 0x40;
 		private const int NEW_FRONTIERS = 0x80;
 
@@ -23,7 +26,7 @@
 		public bool Catacombs { get => (_content & 0x0F) >= CAT; }
 		public bool DarknessRising { get => (_content & 0x0F) >= DR; }
 		public bool LabyrinthOfTheMinotaur { get => (_content & 0x0F) >= LAB; }
-		public bool NewerFrontiers { get { return (_content & NEWER_FRONTIERS) != 0; } }
+		public bool NewNewFrontiers { get { return (_content & NEW_NEW_FRONTIERS) != 0; } }
 		public bool Foundations { get { return (_content & FOUNDATIONS) != 0; } }
 		public bool NewFrontiers { get { return (_content & NEW_FRONTIERS) != 0; } }
 	}

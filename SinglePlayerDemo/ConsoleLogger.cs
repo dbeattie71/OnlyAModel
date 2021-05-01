@@ -24,7 +24,7 @@ namespace SinglePlayerDemo
 		{
 			if(args.Message.Type != MessageType.Server.PingReply)
 			{
-				var type = MessageType.Server.GetName(args.Message.Type, args.Session.Version.ProtocolVersion) ?? "unknown";
+				var type = MessageType.Server.GetName(args.Message.Type, args.Session.ProtocolVersion) ?? "unknown";
 				Console.WriteLine("Session {0} <= {1}", args.Session.Id, type);
 
 				var arr = args.Message.Data.ToArray();
@@ -37,7 +37,7 @@ namespace SinglePlayerDemo
 		{
 			if(args.Message.Type != MessageType.Client.PingRequest)
 			{
-				var type = MessageType.Client.GetName(args.Message.Type, args.Session.Version.ProtocolVersion) ?? "unknown";
+				var type = MessageType.Client.GetName(args.Message.Type, args.Session.ProtocolVersion) ?? "unknown";
 				Console.WriteLine("Session {0} => {1}", args.Session.Id, type);
 
 				var arr = args.Message.Data.ToArray();

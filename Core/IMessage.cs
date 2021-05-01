@@ -2,6 +2,9 @@
 
 namespace Core
 {
+	/// <summary>
+	/// The marshalled form of a client or server message.
+	/// </summary>
 	public interface IMessage
 	{
 		ReadOnlyMemory<byte> Data { get; }

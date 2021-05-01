@@ -24,7 +24,7 @@ namespace SinglePlayerDemo
 		{
 			if(args.Session.Data == null)
 			{
-				args.Session.Data = Autowire.CreateMessageHandler(args.Session.Version.ProtocolVersion, new SessionHandler());
+				args.Session.Data = Autowire.CreateMessageHandler(args.Session.ProtocolVersion, new SessionHandler());
 			}
 			((EventHandler<MessageEventArgs>)args.Session.Data)(server, args);
 		}

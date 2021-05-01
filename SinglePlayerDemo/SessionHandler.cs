@@ -18,7 +18,7 @@ namespace SinglePlayerDemo
 		[AutowiredHandler]
 		public void OnCryptKeyRequest(Server server, MessageEventArgs args, Handshake handshake)
 		{
-			var response = new HandshakeResponse(args.Session.Version.ToString(), args.Session.Version.Build);
+			var response = new HandshakeResponse(args.Session.ClientInfo.Version, args.Session.ClientInfo.Build);
 			args.Session.Send(response);
 		}
 

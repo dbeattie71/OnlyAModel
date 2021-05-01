@@ -1,5 +1,4 @@
-﻿using System;
-using System.Runtime.InteropServices;
+﻿using System.Runtime.InteropServices;
 
 namespace Core.Data
 {
@@ -7,19 +6,18 @@ namespace Core.Data
 	/// Client version and capabilities.
 	/// </summary>
 	[StructLayout(LayoutKind.Sequential, Pack = 1)]
-	public struct ClientVersion
+	public struct ClientInfo
 	{
 #pragma warning disable 0649 // private readonly fields can be written by MemoryMarshal
-		public ClientContent Content { get; }
+		public Content Content { get; }
 		public byte MajorVersion { get; }
 		private readonly byte _minorVersion0;
 		private readonly byte _minorVersion1;
 		private readonly byte _revision;
-		public ushort Build { get; } // build number seems more plausible if it's little endian
+		public ushort Build { get; } // TODO confirm endianness of build number by comparing value shown on loading screen in 1.126+
 #pragma warning restore 0649
 		public int MinorVersion { get => _minorVersion0 * 100 + _minorVersion1; }
 		public char Revision { get => (char)_revision; }
-		public int ProtocolVersion { get => MajorVersion * 100 * (int)Math.Pow(10, _minorVersion0) + MinorVersion; }
-		public override string ToString() => MajorVersion + "." + MinorVersion + Revision;
+		public string Version { get => MajorVersion + "." + MinorVersion + Revision; }
 	}
 }

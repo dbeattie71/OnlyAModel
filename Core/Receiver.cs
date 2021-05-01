@@ -75,9 +75,10 @@ namespace Core
 			_buffer.Append(bytes);
 			while (_buffer.TryGetMessage(out Message message))
 			{
-				if (_session.Version.MajorVersion == 0)
+				if (_session.ClientInfo.MajorVersion == 0)
 				{
-					_session.Version = MemoryMarshal.Read<ClientVersion>(message.Payload.Span);
+					_session.ClientInfo = MemoryMarshal.Read<ClientInfo>(message.Payload.Span);
+					_session.ProtocolVersion = _session.ClientInfo.MajorVersion * 1000 + _session.ClientInfo.MinorVersion;
 				}
 				_server.RaiseMessageReceived(_session, message);
 			}
