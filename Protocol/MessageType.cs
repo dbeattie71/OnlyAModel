@@ -61,7 +61,7 @@ namespace Protocol
 			public const byte PetWindow = 0x8A;
 			public const byte PlayerRegionChangeRequest = 0x90;
 			public const byte DoorRequest = 0x99;
-			public const byte RegionListRequest = 0x9D;
+			public const byte CharacterRegionRequest = 0x9D;
 			public const byte DisbandFromGroup = 0x9F;
 			public const byte Ping = 0xA3;
 			public const byte ObjectUpdateRequest = 0xA5;
