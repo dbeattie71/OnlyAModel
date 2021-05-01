@@ -16,10 +16,7 @@ namespace Protocol.Server
 
 		public byte Type => MessageType.Server.HandshakeResponse;
 
-		public ushort Length(int protocolVersion)
-		{
-			return (ushort)(_version.Length + 7);
-		}
+		public int Length(int protocolVersion) => _version.Length + 7;
 
 		public void Marshal(Span<byte> span, int protocolVersion)
 		{

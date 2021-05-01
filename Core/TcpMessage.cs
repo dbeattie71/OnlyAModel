@@ -36,7 +36,7 @@ namespace Core
 			var len = sendable.Length(protocolVersion);
 			Memory<byte> data = new byte[len + 3];
 			var span = data.Span;
-			BinaryPrimitives.WriteUInt16BigEndian(span[0..2], len);
+			BinaryPrimitives.WriteUInt16BigEndian(span[0..2], (ushort)len);
 			span[2] = sendable.Type;
 			sendable.Marshal(span[3..], protocolVersion);
 			_data = data;

@@ -29,7 +29,7 @@ namespace Protocol
 			public const byte HousePlaceItem = 0x0C;
 			public const byte PlayerPickupHouseItem = 0x0D;
 			public const byte HouseDecorationRotate = 0x0E;
-			public const byte CharacterSelectRequest = 0x10;
+			public const byte CharacterSelect = 0x10;
 			public const byte MarketSearchRequest = 0x11;
 			public const byte UDPInitRequest = 0x14;
 			public const byte HouseDecorationRequest = 0x18;
@@ -63,9 +63,9 @@ namespace Protocol
 			public const byte DoorRequest = 0x99;
 			public const byte RegionListRequest = 0x9D;
 			public const byte DisbandFromGroup = 0x9F;
-			public const byte PingRequest = 0xA3;
+			public const byte Ping = 0xA3;
 			public const byte ObjectUpdateRequest = 0xA5;
-			public const byte LoginRequest = 0xA7;
+			public const byte Login = 0xA7;
 			public const byte PositionUpdate = 0xA9;
 			public const byte SlashCommand = 0xAF;
 			public const byte PlayerTarget = 0xB0;
@@ -131,7 +131,7 @@ namespace Protocol
 			public const byte DebugMode = 0x21;
 			public const byte HandshakeResponse = 0x22;
 			public const byte SessionId = 0x28;
-			public const byte PingReply = 0x29;
+			public const byte PingResponse = 0x29;
 			public const byte LoginGranted = 0x2A;
 			public const byte CharacterInitFinished = 0x2B;
 			public const byte LoginDenied = 0x2C;

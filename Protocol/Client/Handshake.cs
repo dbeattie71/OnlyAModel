@@ -5,6 +5,8 @@ namespace Protocol.Client
 {
 	public class Handshake
 	{
+		private Handshake() { }
+
 		[Unmarshaller(MessageType.Client.Handshake)]
 		public static Handshake Unmarshall(MessageEventArgs _)
 		{

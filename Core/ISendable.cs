@@ -12,7 +12,7 @@ namespace Core
 		/// </summary>
 		bool Datagram { get => false; }
 		byte Type { get; }
-		ushort Length(int protocolVersion);
+		int Length(int protocolVersion);
 		void Marshal(Span<byte> span, int protocolVersion);
 	}
 }

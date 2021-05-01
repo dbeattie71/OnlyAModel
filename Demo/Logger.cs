@@ -22,10 +22,10 @@ namespace Demo
 
 		public void OnMessageSent(object server, MessageEventArgs args)
 		{
-			if (args.Message.Type != MessageType.Server.PingReply)
+			if (args.Message.Type != MessageType.Server.PingResponse)
 			{
-				var type = MessageType.Server.GetName(args.Message.Type, args.Session.ProtocolVersion) ?? "unknown";
-				Console.WriteLine("Session {0} <= {1}", args.Session.Id, type);
+				var name = MessageType.Server.GetName(args.Message.Type, args.Session.ProtocolVersion) ?? "unknown";
+				Console.WriteLine("Session {0} <= {1} ({2:X})", args.Session.Id, name, args.Message.Type);
 
 				var arr = args.Message.Data.ToArray();
 				Console.WriteLine(BitConverter.ToString(arr).Replace("-", " "));
@@ -35,10 +35,10 @@ namespace Demo
 
 		public void OnMessageReceived(object server, MessageEventArgs args)
 		{
-			if (args.Message.Type != MessageType.Client.PingRequest)
+			if (args.Message.Type != MessageType.Client.Ping)
 			{
-				var type = MessageType.Client.GetName(args.Message.Type, args.Session.ProtocolVersion) ?? "unknown";
-				Console.WriteLine("Session {0} => {1}", args.Session.Id, type);
+				var name = MessageType.Client.GetName(args.Message.Type, args.Session.ProtocolVersion) ?? "unknown";
+				Console.WriteLine("Session {0} => {1} ({2:X})", args.Session.Id, name, args.Message.Type);
 
 				var arr = args.Message.Data.ToArray();
 				Console.WriteLine(BitConverter.ToString(arr).Replace("-", " "));
